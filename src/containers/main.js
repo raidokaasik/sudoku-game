@@ -59,7 +59,7 @@ const Cell = styled.div`
 `;
 
 const Main = () => {
-  const testArray = [
+  let testArray = [
     [0, 1, 0, 0],
     [0, 0, 2, 0],
     [3, 0, 0, 0],
@@ -104,17 +104,54 @@ const Main = () => {
     console.log("test:" + row + col);
   };
 
-  const findCell = () => {
-    for (let i = 0; i < 4; i++) {
-      for (let j = 0; j < 4; j++) {
-        if (test[i][j] === 0) {
-          console.log([i, j]);
+  const nextCell = (grid) => {
+    for (let r = 0; r < 4; r++) {
+      for (let c = 0; c < 4; c++) {
+        if (grid[r][c] === 0) {
+          return [r, c];
         }
+      }
+    }
+    return [-1, -1];
+    // return [-1, -1];
+  };
+
+  const isCellValid = (grid, row, col, value) => {
+    if (checkRows(grid, row, value) && checkCols(grid, col, value)) {
+      return true;
+    }
+    return false;
+  };
+
+  const solution = (grid) => {
+    let empty = nextCell(testArray);
+    console.log(empty);
+    console.log(testArray);
+    const row = empty[0];
+    const col = empty[1];
+    if (row === -1) return testArray;
+    for (let i = 1; i <= 4; i++) {
+      if (isCellValid(testArray, row, col, i)) {
+        testArray[row][col] = i;
+        solution(testArray);
       }
     }
   };
 
-  const validateRows = () => {};
+  const checkRows = (grid, row, value) => {
+    if (grid[row].indexOf(value) === -1) {
+      return true;
+    }
+    return false;
+  };
+  const checkCols = (grid, col, value) => {
+    for (let i = 0; i < 4; i++) {
+      if (grid[i][col] === value) {
+        return false;
+      }
+    }
+    return true;
+  };
 
   const gameboard = test.map((item, rowIndex) => (
     <Row key={rowIndex}>
@@ -170,10 +207,16 @@ const Main = () => {
         )}
         <StyledGameNumbers>
           {gameNumbers}
-          <button onClick={() => findCell()}>Randomize</button>
           <button
             onClick={() => {
-              "";
+              nextCell(test);
+            }}
+          >
+            Randomize
+          </button>
+          <button
+            onClick={() => {
+              solution();
             }}
           >
             Solve

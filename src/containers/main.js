@@ -104,6 +104,18 @@ const Main = () => {
     console.log("test:" + row + col);
   };
 
+  const findCell = () => {
+    for (let i = 0; i < 4; i++) {
+      for (let j = 0; j < 4; j++) {
+        if (test[i][j] === 0) {
+          console.log([i, j]);
+        }
+      }
+    }
+  };
+
+  const validateRows = () => {};
+
   const gameboard = test.map((item, rowIndex) => (
     <Row key={rowIndex}>
       {item.map((cell, colIndex) => (
@@ -158,13 +170,7 @@ const Main = () => {
         )}
         <StyledGameNumbers>
           {gameNumbers}
-          <button
-            onClick={() => {
-              "";
-            }}
-          >
-            Randomize
-          </button>
+          <button onClick={() => findCell()}>Randomize</button>
           <button
             onClick={() => {
               "";

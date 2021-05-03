@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
 
 const StyledMainWrapper = styled.div`
@@ -59,7 +59,7 @@ const Cell = styled.div`
 `;
 
 const Main = () => {
-  const testArray = [
+  let testArray = [
     [0, 1, 0, 0],
     [0, 0, 2, 0],
     [3, 0, 0, 0],
@@ -71,7 +71,7 @@ const Main = () => {
   const [startGame, setStartGame] = useState(false);
   const [test, setTest] = useState(testArray);
 
-  const startNewGame = async (e) => {
+  const startNewGame = async e => {
     // e.preventDefault();
     // // const randomValue = Math.floor(Math.random() * mode);
     // const nrOfPossibilities = [];
@@ -84,7 +84,7 @@ const Main = () => {
     // setPossibleNumbers(nrOfPossibilities);
   };
 
-  const modeHandler = (e) => {
+  const modeHandler = e => {
     e.preventDefault();
     const selectValue = document.getElementById("mode");
     setMode(parseInt(selectValue.value));
@@ -102,6 +102,55 @@ const Main = () => {
 
   const getIndex = (row, col) => {
     console.log("test:" + row + col);
+  };
+
+  const nextCell = grid => {
+    for (let r = 0; r < 4; r++) {
+      for (let c = 0; c < 4; c++) {
+        if (grid[r][c] === 0) {
+          return [r, c];
+        }
+      }
+    }
+    return [-1, -1];
+    // return [-1, -1];
+  };
+
+  const isCellValid = (grid, row, col, value) => {
+    if (checkRows(grid, row, value) && checkCols(grid, col, value)) {
+      return true;
+    }
+    return false;
+  };
+
+  const solution = grid => {
+    let empty = nextCell(testArray);
+    console.log(empty);
+    console.log(testArray);
+    const row = empty[0];
+    const col = empty[1];
+    if (row === -1) return testArray;
+    for (let i = 1; i <= 4; i++) {
+      if (isCellValid(testArray, row, col, i)) {
+        testArray[row][col] = i;
+        solution(testArray);
+      }
+    }
+  };
+
+  const checkRows = (grid, row, value) => {
+    if (grid[row].indexOf(value) === -1) {
+      return true;
+    }
+    return false;
+  };
+  const checkCols = (grid, col, value) => {
+    for (let i = 0; i < 4; i++) {
+      if (grid[i][col] === value) {
+        return false;
+      }
+    }
+    return true;
   };
 
   const gameboard = test.map((item, rowIndex) => (
@@ -136,7 +185,7 @@ const Main = () => {
           <StyledNewgameScreen>
             <h1>New game</h1>
             <form
-              onSubmit={(e) => {
+              onSubmit={e => {
                 startNewGame(e);
               }}
             >
@@ -144,7 +193,7 @@ const Main = () => {
                 name="mode"
                 id="mode"
                 value={mode}
-                onChange={(e) => {
+                onChange={e => {
                   modeHandler(e);
                 }}
               >
@@ -160,14 +209,14 @@ const Main = () => {
           {gameNumbers}
           <button
             onClick={() => {
-              "";
+              nextCell(test);
             }}
           >
             Randomize
           </button>
           <button
             onClick={() => {
-              "";
+              solution();
             }}
           >
             Solve

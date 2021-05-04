@@ -25,11 +25,11 @@ const check4x4Box = (grid, row, col, value) => {
   return true;
 };
 
-const isCellValid = (grid, row, col, value) => {
+const isCellValid = (grid, row, col, value, mode) => {
   if (
     checkRows(grid, row, value) &&
-    checkCols(grid, col, value) &&
-    check4x4Box(grid, row, col, value)
+    checkCols(grid, col, value, mode) &&
+    check4x4Box(grid, row, col, value, mode)
   ) {
     return true;
   }

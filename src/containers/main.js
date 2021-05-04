@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { isCellValid } from "../utils/validate";
-// import { solution } from "../utils/solver";
+import { solution } from "../utils/solver";
 
 const StyledMainWrapper = styled.div`
   display: flex;
@@ -46,7 +46,7 @@ const StyledGameNumbers = styled.div`
   display: flex;
   flex-direction: row;
 `;
-const Cell = styled.div`
+const StyledCell = styled.div`
   margin: 2px;
   display: flex;
   align-items: center;
@@ -54,7 +54,8 @@ const Cell = styled.div`
   padding: 5px;
   width: 40px;
   height: 40px;
-  background: #ccc;
+  background: ${(props) =>
+    props.locked ? "#c6e8f5" : props.active ? "#c6e8f5" : "#ccc"};
   &:hover {
     background: #c6e8f5;
   }
@@ -66,24 +67,42 @@ class Main extends Component {
     possibleNumbers: [],
     board: [],
     completedBoard: [],
+    lockedCells: [],
     startGame: false,
+    solution: false,
+    checkSolution: false,
+    selected: false,
+    selectedIndex: [],
   };
 
+  // START AND RESET GAME
+  // start
   startNewGame = async (e) => {
-    e.preventDefault();
+    this.createRandomBoard();
     const board = await this.createRandomBoard();
-    this.setState({
-      startGame: true,
+    this.setState((prev) => ({
+      startGame: !prev.startGame,
       possibleNumbers: this.createButtons(),
+      completedBoard: prev.completedBoard.concat(board),
+    }));
+    await this.removeCells(this.state.mode, 12);
+  };
+
+  // reset
+  resetGame = async () => {
+    const board = await this.createRandomBoard();
+    this.setState((prev) => ({
       completedBoard: board,
-    });
-    this.removeCells(this.state.mode, 12);
+    }));
+    await this.removeCells(this.state.mode, 12);
   };
 
   modeHandler = (e) => {
     e.preventDefault();
     const selectValue = document.getElementById("mode");
-    this.setState({ mode: parseInt(selectValue.value) });
+    this.setState((prev) => ({
+      mode: prev.mode + parseInt(selectValue.value),
+    }));
   };
 
   createButtons = () => {
@@ -97,18 +116,65 @@ class Main extends Component {
   // END GAME
 
   endGame = () => {
-    this.setState({
+    this.setState((prev) => ({
       mode: 0,
-      startGame: false,
-      board: [],
       possibleNumbers: [],
-    });
+      board: [],
+      completedBoard: [],
+      lockedCells: [],
+      startGame: false,
+      solution: false,
+      checkSolution: false,
+      selected: false,
+      selectedIndex: [],
+    }));
   };
 
   getIndex = (row, col) => {
-    console.log("test:" + row + col);
+    this.setState((prev) => ({ selected: true }));
+    const selection = [row, col];
+    this.setState((prev) => ({
+      selectedIndex: selection,
+    }));
   };
 
+  setNewNumber = (value) => {
+    let copiedBoard = this.deepCopy(this.state.board);
+    const index = this.state.selectedIndex;
+    copiedBoard[index[0]][index[1]] = value;
+    this.setState({ board: copiedBoard });
+  };
+
+  // REMOVE NR OF CELLS
+  // Util to create a deep copy of 2D array
+  deepCopy = (array) => {
+    let copy = [];
+    for (let i = 0; i < array.length; i++) {
+      copy[i] = array[i].slice();
+    }
+    return copy;
+  };
+  // remove cells
+  removeCells = async (gameMode, numbersToRemove) => {
+    let nums = numbersToRemove;
+    let newArray = this.deepCopy(this.state.completedBoard);
+    const helper = (nums) => {
+      const randomRow = Math.floor(Math.random() * gameMode);
+      const randomCol = Math.floor(Math.random() * gameMode);
+      if (nums === 0) return;
+      if (newArray[randomRow][randomCol] !== 0) {
+        newArray[randomRow][randomCol] = 0;
+        nums--;
+      }
+      helper(nums);
+    };
+    helper(nums);
+    this.lockedCellGroup(newArray);
+    this.setState({ board: newArray });
+  };
+
+  // CREATE RANDOM BOARD & SOLVE IT
+  // first row of random INTs
   createFirstRow = (num) => {
     let firstRow = [];
     const helper = () => {
@@ -121,98 +187,100 @@ class Main extends Component {
     return firstRow;
   };
 
-  nextCell = (grid) => {
-    for (let r = 0; r < 4; r++) {
-      for (let c = 0; c < 4; c++) {
-        if (grid[r][c] === 0) {
-          return [r, c];
-        }
-      }
-    }
-    return ["done"];
-  };
-  solution = (grid) => {
-    let copiedArray = [...grid];
-    let empty = this.nextCell(copiedArray);
-    const row = empty[0];
-    const col = empty[1];
-    if (row === "done") return;
-    for (let i = 1; i <= 4; i++) {
-      if (isCellValid(copiedArray, row, col, i)) {
-        copiedArray[row][col] = i;
-        this.solution(copiedArray);
-      }
-    }
-    if (this.nextCell(copiedArray)[0] !== "done") copiedArray[row][col] = 0;
-    // console.log(grid);
-    return copiedArray;
-  };
-
-  copyAnArray = (array) => {
-    const copy = [];
-    array.forEach((item) => {
-      if (Array.isArray(item)) {
-        copy.push(item);
-      } else return copy;
-    });
-  };
-
-  removeCells = (gameMode, numbersToRemove) => {
-    let nums = numbersToRemove;
-    const newArray = this.copyAnArray(this.state.board);
-    console.log(newArray);
-    const helper = (nums) => {
-      const randomRow = Math.floor(Math.random() * gameMode);
-      const randomCol = Math.floor(Math.random() * gameMode);
-      if (nums === 0) return;
-      nums--;
-      // if (removedCells[randomRow][randomCol] !== 0) {
-      //   removedCells = [
-      //     ...newArray.slice([0, 0], [randomRow, randomCol]),
-      //     newArray[randomRow][randomCol],
-      //     ...newArray.slice([randomRow + 1], [randomCol + 1]),
-      //   ];
-      //   nums--;
-      // }
-      helper(nums);
-    };
-    helper(nums);
-  };
-
+  // populate the board along with the first row and solve it.
   createRandomBoard = async () => {
     let newBoard = [];
     const firstRow = this.createFirstRow(this.state.mode);
     const helper = () => {
       if (newBoard.length === this.state.mode) return;
       if (newBoard.length < 1) newBoard.push(firstRow);
-      newBoard.push(new Array(4).fill(0));
+      newBoard.push(new Array(this.state.mode).fill(0));
       helper();
     };
     helper();
-    this.solution(newBoard);
+    solution(newBoard);
     return newBoard;
-    // removeCells(mode, newBoard, 12);
   };
 
+  // SHOW SOLUTION
+
+  checkSolution = (gameBoard, solution) => {
+    for (let r = 0; r < this.state.mode; r++) {
+      for (let c = 0; c < this.state.mode; c++) {
+        if (gameBoard[r][c] !== solution[r][c]) return console.log("Incorrect");
+      }
+    }
+    return console.log("Correct solution");
+  };
+
+  showSolution = () => {
+    this.setState((prev) => ({ solution: !prev.solution }));
+    // this.setState({ showSolution: true });
+  };
+
+  lockedCellGroup = (board) => {
+    const lockedCells = [];
+    for (let r = 0; r < this.state.mode; r++) {
+      for (let c = 0; c < this.state.mode; c++) {
+        if (board[r][c] !== 0) {
+          lockedCells.push(r.toString() + c.toString());
+        }
+      }
+    }
+    this.setState({ lockedCells: lockedCells });
+  };
+
+  // disableLockedCell = (row, col) => {
+  //   console.log("true: " + row + " " + col);
+  //   if (this.state.lockedCells.includes([row, col])) {
+  //     console.log("true: " + row + " " + col);
+  //   } else {
+  //     console.log("false");
+  //   }
+  // };
+
   render() {
-    const gameboard = this.state.board.map((item, rowIndex) => (
+    const board = this.state.solution
+      ? this.state.completedBoard
+      : this.state.board;
+    const gameboard = board.map((item, rowIndex) => (
       <Row key={rowIndex}>
         {item.map((cell, colIndex) => (
-          <Cell
+          <StyledCell
+            locked={
+              this.state.lockedCells.includes(
+                rowIndex.toString() + colIndex.toString()
+              )
+                ? true
+                : false
+            }
+            active={
+              rowIndex === this.state.selectedIndex[0] &&
+              colIndex === this.state.selectedIndex[1]
+                ? true
+                : false
+            }
             onClick={() => this.getIndex(rowIndex, colIndex)}
             key={colIndex}
           >
             {cell === 0 ? "" : cell}
-          </Cell>
+          </StyledCell>
         ))}
       </Row>
     ));
 
     const gameNumbers = this.state.possibleNumbers.map((item, index) => (
-      <Cell key={index}>{item}</Cell>
+      <StyledCell
+        onClick={() => {
+          this.setNewNumber(item);
+        }}
+        key={index}
+      >
+        {item}
+      </StyledCell>
     ));
     return (
-      <Cell>
+      <>
         <StyledMainWrapper>
           <div>
             <button
@@ -254,15 +322,28 @@ class Main extends Component {
             {gameNumbers}
             <button
               onClick={() => {
-                this.createRandomBoard();
+                this.resetGame();
               }}
             >
               Randomize
             </button>
-            <button onClick={() => {}}>Solve</button>
+            <button
+              onClick={() => {
+                this.showSolution();
+              }}
+            >
+              Show solution
+            </button>
+            <button
+              onClick={() => {
+                this.checkSolution(this.state.board, this.state.completedBoard);
+              }}
+            >
+              Check
+            </button>
           </StyledGameNumbers>
         </StyledMainWrapper>
-      </Cell>
+      </>
     );
   }
 }

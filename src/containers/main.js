@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { solution } from "../utils/solver";
 
 const StyledMainWrapper = styled.div`
   display: flex;
@@ -59,29 +60,18 @@ const Cell = styled.div`
 `;
 
 const Main = () => {
-  let testArray = [
-    [0, 1, 0, 0],
-    [0, 0, 2, 0],
-    [3, 0, 0, 0],
-    [0, 0, 0, 0],
-  ];
   const [mode, setMode] = useState(0);
   const [possibleNumbers, setPossibleNumbers] = useState([]);
   const [board, setBoard] = useState([]);
+  const [completed, setCompleted] = useState([]);
   const [startGame, setStartGame] = useState(false);
-  const [test, setTest] = useState(testArray);
 
   const startNewGame = async (e) => {
-    // e.preventDefault();
-    // // const randomValue = Math.floor(Math.random() * mode);
-    // const nrOfPossibilities = [];
-    // for (let i = 1; i <= mode; i++) {
-    //   nrOfPossibilities.push(i);
-    // }
-    // const board = new Array(mode).fill(new Array(mode).fill(0));
-    // setBoard(board);
     setStartGame(true);
-    // setPossibleNumbers(nrOfPossibilities);
+    const board = await createRandomBoard();
+    removeNumbers(board, 12);
+    // removeCells(mode, board, 12);
+    setPossibleNumbers(createButtons());
   };
 
   const modeHandler = (e) => {
@@ -90,12 +80,20 @@ const Main = () => {
     setMode(parseInt(selectValue.value));
   };
 
+  const createButtons = () => {
+    const nrOfPossibilities = [];
+    for (let i = 1; i <= mode; i++) {
+      nrOfPossibilities.push(i);
+    }
+    return nrOfPossibilities;
+  };
+
   // END GAME
 
   const endGame = () => {
     setStartGame(false);
     setMode(0);
-    setTest(testArray);
+    // setTest(testArray);
     setBoard([]);
     setPossibleNumbers([]);
   };
@@ -104,60 +102,78 @@ const Main = () => {
     console.log("test:" + row + col);
   };
 
-  const nextCell = (grid) => {
-    for (let r = 0; r < 4; r++) {
-      for (let c = 0; c < 4; c++) {
-        if (grid[r][c] === 0) {
-          return [r, c];
-        }
-      }
-    }
-    return [-1, -1];
-    // return [-1, -1];
+  const setSolution = () => {};
+
+  const createFirstRow = (num) => {
+    let firstRow = [];
+    const helper = () => {
+      const random = Math.floor(Math.random() * num) + 1;
+      if (firstRow.length === num) return;
+      if (firstRow.indexOf(random) === -1) firstRow.push(random);
+      helper();
+    };
+    helper();
+    return firstRow;
   };
 
-  const isCellValid = (grid, row, col, value) => {
-    if (checkRows(grid, row, value) && checkCols(grid, col, value)) {
-      return true;
+  const removeNumbers = (board, numbersToRemove) => {
+    const newArray = [...board];
+    const removedTiles = [];
+    const nums = numbersToRemove;
+    for (let i = 0; i <= nums; i++) {
+      const randomRow = Math.floor(Math.random() * mode);
+      const randomCol = Math.floor(Math.random() * mode);
+      // if (newArray[randomRow][randomCol] !== 0) {
+      //   removedTiles.push((newArray[randomRow][randomCol] = 0));
+      // }
     }
-    return false;
+
+    console.log(removedTiles);
   };
 
-  const solution = (grid) => {
-    let empty = nextCell(testArray);
-    console.log(empty);
-    console.log(testArray);
-    const row = empty[0];
-    const col = empty[1];
-    if (row === -1) return testArray;
-    for (let i = 1; i <= 4; i++) {
-      if (isCellValid(testArray, row, col, i)) {
-        testArray[row][col] = i;
-        solution(testArray);
-      }
-    }
+  // const removeCells = (gameMode, array, numbersToRemove) => {
+  //   let nums = numbersToRemove;
+  //   let newArray = [...array];
+  //   // let nums = [...numbersToRemove][0];
+  //   // let newArray = [...array];
+  //   // console.log(newArray);
+  //   // console.log(nums);
+  //   const helper = (nums) => {
+  //     const randomRow = Math.floor(Math.random() * gameMode);
+  //     const randomCol = Math.floor(Math.random() * gameMode);
+  //     if (nums === 0) return;
+  //     if (newArray[randomRow][randomCol] !== 0) {
+  //       newArray[randomRow][randomCol] = 0;
+  //       nums--;
+  //     }
+  //     helper(nums);
+  //   };
+  //   helper(nums);
+  //   setBoard(newArray);
+  // };
+
+  const createRandomBoard = async () => {
+    let newBoard = [];
+    const firstRow = createFirstRow(mode);
+    const helper = () => {
+      if (newBoard.length === mode) return;
+      if (newBoard.length < 1) newBoard.push(firstRow);
+      newBoard.push(new Array(4).fill(0));
+      helper();
+    };
+    helper();
+    setCompleted(newBoard);
+    setBoard(newBoard);
+    solution(newBoard);
+    return newBoard;
+    // removeCells(mode, newBoard, 12);
   };
 
-  const checkRows = (grid, row, value) => {
-    if (grid[row].indexOf(value) === -1) {
-      return true;
-    }
-    return false;
-  };
-  const checkCols = (grid, col, value) => {
-    for (let i = 0; i < 4; i++) {
-      if (grid[i][col] === value) {
-        return false;
-      }
-    }
-    return true;
-  };
-
-  const gameboard = test.map((item, rowIndex) => (
+  const gameboard = board.map((item, rowIndex) => (
     <Row key={rowIndex}>
       {item.map((cell, colIndex) => (
         <Cell onClick={() => getIndex(rowIndex, colIndex)} key={colIndex}>
-          {cell}
+          {cell === 0 ? "" : cell}
         </Cell>
       ))}
     </Row>
@@ -209,18 +225,12 @@ const Main = () => {
           {gameNumbers}
           <button
             onClick={() => {
-              nextCell(test);
+              createRandomBoard();
             }}
           >
             Randomize
           </button>
-          <button
-            onClick={() => {
-              solution();
-            }}
-          >
-            Solve
-          </button>
+          <button onClick={() => {}}>Solve</button>
         </StyledGameNumbers>
       </StyledMainWrapper>
     </Cell>

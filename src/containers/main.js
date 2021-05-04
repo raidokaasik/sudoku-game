@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { isCellValid } from "../utils/validate";
 import { solution } from "../utils/solver";
 
 const StyledMainWrapper = styled.div`
@@ -16,8 +15,8 @@ const StyledNewgameScreen = styled.div`
   align-items: center;
   justify-content: center;
   background: #fff;
-  min-height: 400px;
-  min-width: 400px;
+  min-height: 600px;
+  min-width: 600px;
 
   form {
     display: flex;
@@ -37,8 +36,8 @@ const StyledGameBoard = styled.div`
   flex-direction: column;
 
   background: #fff;
-  min-height: 400px;
-  min-width: 400px;
+  min-height: 600px;
+  min-width: 600px;
   border-radius: 5px;
 `;
 const StyledGameNumbers = styled.div`
@@ -47,15 +46,31 @@ const StyledGameNumbers = styled.div`
   flex-direction: row;
 `;
 const StyledCell = styled.div`
-  margin: 2px;
+  border-radius: 3px;
+  border: solid 1px #d3d8db;
+
+  /* border: solid 1px #d3d8db;
+  border-top: solid 1px
+    ${(props) => (props.rowindex % 2 === 0 ? "#242424" : "#d3d8db")};
+  border-bottom: solid 1px
+    ${(props) => (props.rowindex === 3 ? "#242424" : "#d3d8db")};
+  border-left: 1px solid
+    ${(props) => (props.colindex % 2 === 0 ? "#242424" : "#d3d8db")};
+  border-right: 1px solid
+    ${(props) => (props.colindex === 3 ? "#242424" : "#d3d8db")}; */
+
+  margin: 1px;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 5px;
-  width: 40px;
-  height: 40px;
+  font-weight: 600;
+  font-size: 1.4rem;
+  min-width: 60px;
+  min-height: 60px;
+  color: #333a3d;
   background: ${(props) =>
-    props.locked ? "#c6e8f5" : props.active ? "#c6e8f5" : "#ccc"};
+    props.locked ? "#f5f5f2" : props.active ? "#c6e8f5" : "#f5f5f2"};
   &:hover {
     background: #c6e8f5;
   }
@@ -78,14 +93,19 @@ class Main extends Component {
   // START AND RESET GAME
   // start
   startNewGame = async (e) => {
-    this.createRandomBoard();
-    const board = await this.createRandomBoard();
-    this.setState((prev) => ({
-      startGame: !prev.startGame,
-      possibleNumbers: this.createButtons(),
-      completedBoard: prev.completedBoard.concat(board),
-    }));
-    await this.removeCells(this.state.mode, 12);
+    e.preventDefault();
+    if (this.state.mode !== 0) {
+      const board = await this.createRandomBoard();
+      this.setState((prev) => ({
+        startGame: !prev.startGame,
+        possibleNumbers: this.createButtons(),
+        completedBoard: board,
+      }));
+      const numbersToRemove = this.state.mode === 4 ? 11 : 64;
+      await this.removeCells(this.state.mode, numbersToRemove);
+    } else {
+      console.log("Mode must be selected");
+    }
   };
 
   // reset
@@ -94,14 +114,15 @@ class Main extends Component {
     this.setState((prev) => ({
       completedBoard: board,
     }));
-    await this.removeCells(this.state.mode, 12);
+    const numbersToRemove = this.state.mode === 4 ? 11 : 64;
+    await this.removeCells(this.state.mode, numbersToRemove);
   };
 
   modeHandler = (e) => {
     e.preventDefault();
     const selectValue = document.getElementById("mode");
     this.setState((prev) => ({
-      mode: prev.mode + parseInt(selectValue.value),
+      mode: parseInt(selectValue.value),
     }));
   };
 
@@ -114,21 +135,6 @@ class Main extends Component {
   };
 
   // END GAME
-
-  endGame = () => {
-    this.setState((prev) => ({
-      mode: 0,
-      possibleNumbers: [],
-      board: [],
-      completedBoard: [],
-      lockedCells: [],
-      startGame: false,
-      solution: false,
-      checkSolution: false,
-      selected: false,
-      selectedIndex: [],
-    }));
-  };
 
   getIndex = (row, col) => {
     this.setState((prev) => ({ selected: true }));
@@ -198,7 +204,7 @@ class Main extends Component {
       helper();
     };
     helper();
-    solution(newBoard);
+    solution(newBoard, this.state.mode);
     return newBoard;
   };
 
@@ -215,7 +221,6 @@ class Main extends Component {
 
   showSolution = () => {
     this.setState((prev) => ({ solution: !prev.solution }));
-    // this.setState({ showSolution: true });
   };
 
   lockedCellGroup = (board) => {
@@ -230,14 +235,20 @@ class Main extends Component {
     this.setState({ lockedCells: lockedCells });
   };
 
-  // disableLockedCell = (row, col) => {
-  //   console.log("true: " + row + " " + col);
-  //   if (this.state.lockedCells.includes([row, col])) {
-  //     console.log("true: " + row + " " + col);
-  //   } else {
-  //     console.log("false");
-  //   }
-  // };
+  endGame = () => {
+    this.setState(() => ({
+      mode: 0,
+      possibleNumbers: [],
+      board: [],
+      completedBoard: [],
+      lockedCells: [],
+      startGame: false,
+      solution: false,
+      checkSolution: false,
+      selected: false,
+      selectedIndex: [],
+    }));
+  };
 
   render() {
     const board = this.state.solution
@@ -247,6 +258,8 @@ class Main extends Component {
       <Row key={rowIndex}>
         {item.map((cell, colIndex) => (
           <StyledCell
+            rowindex={rowIndex}
+            colIndex={colIndex}
             locked={
               this.state.lockedCells.includes(
                 rowIndex.toString() + colIndex.toString()
@@ -325,7 +338,7 @@ class Main extends Component {
                 this.resetGame();
               }}
             >
-              Randomize
+              Reset
             </button>
             <button
               onClick={() => {
@@ -340,6 +353,13 @@ class Main extends Component {
               }}
             >
               Check
+            </button>
+            <button
+              onClick={() => {
+                this.setNewNumber(0);
+              }}
+            >
+              Erase
             </button>
           </StyledGameNumbers>
         </StyledMainWrapper>

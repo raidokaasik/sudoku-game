@@ -32,7 +32,8 @@ const StyledMainWrapper = styled.div`
   position: relative;
   z-index: 1;
   width: 100%;
-  height: 100vh;
+
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -57,19 +58,21 @@ const StyledCheckSolutionContainer = styled.div`
     font-size: 1.2rem;
   }
   @media (max-width: 860px) {
+    position: relative;
+    top: 0;
     width: 100%;
+    height: 50px;
     gap: 15px;
     flex-direction: row;
-    top: 100px;
     align-items: center;
     justify-content: center;
   }
 
   @media (max-width: 630px) {
+    margin-bottom: 30px;
     width: 100%;
     gap: 15px;
     flex-direction: column;
-    top: 30px;
     align-items: center;
     justify-content: center;
   }
@@ -81,11 +84,16 @@ const StyledCloseButtonWrapper = styled.div`
   top: 180px;
   right: 25px;
   @media (max-width: 860px) {
-    right: 15px;
-    top: 60px;
+    padding: 10px 0;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    position: relative;
+    right: 0;
+    top: 0;
   }
   @media (max-width: 630px) {
-    top: 30px;
     padding: 0;
   }
 `;
@@ -153,31 +161,13 @@ class Main extends Component {
     }));
   };
 
+  // Creates a set of buttons according to the game mode
   createButtons = () => {
     const nrOfPossibilities = [];
     for (let i = 1; i <= this.state.mode; i++) {
       nrOfPossibilities.push(i);
     }
     return nrOfPossibilities;
-  };
-
-  // END GAME
-
-  getIndex = (row, col) => {
-    this.setState((prev) => ({ selected: true }));
-    const selection = [row, col];
-    this.setState((prev) => ({
-      selectedIndex: selection,
-    }));
-  };
-
-  setNewNumber = (value) => {
-    const index = this.state.selectedIndex;
-    if (index.length !== 0) {
-      let copiedBoard = this.deepCopy(this.state.board);
-      copiedBoard[index[0]][index[1]] = value;
-      this.setState({ board: copiedBoard });
-    }
   };
 
   // REMOVE NR OF CELLS
@@ -237,7 +227,7 @@ class Main extends Component {
     return newBoard;
   };
 
-  // SHOW SOLUTION
+  // SHOW & CHECK SOLUTION
 
   checkSolution = (gameBoard, solution) => {
     const timeOut = () => {
@@ -263,6 +253,29 @@ class Main extends Component {
   };
 
   // UTILS
+
+  // Get index of the cell to be modified
+
+  getIndex = (row, col) => {
+    this.setState(() => ({ selected: true }));
+    const selection = [row, col];
+    this.setState(() => ({
+      selectedIndex: selection,
+    }));
+  };
+
+  // Set a new value to the selected Cell
+
+  setNewNumber = (value) => {
+    const index = this.state.selectedIndex;
+    if (index.length !== 0) {
+      let copiedBoard = this.deepCopy(this.state.board);
+      copiedBoard[index[0]][index[1]] = value;
+      this.setState({ board: copiedBoard });
+    }
+  };
+
+  // Creates an array of cells that were originally generated and cannot be modified.
 
   lockedCellGroup = (board) => {
     const lockedCells = [];
@@ -324,7 +337,6 @@ class Main extends Component {
     return (
       <StyledMainWrapper onClick={(e) => this.deselect(e)}>
         <StyledMain onClick={(e) => e.stopPropagation()}>
-          <StyledCheckSolutionContainer>{isvalid}</StyledCheckSolutionContainer>
           {this.state.startGame ? (
             <StyledCloseButtonWrapper>
               <Button
@@ -335,6 +347,25 @@ class Main extends Component {
               />
             </StyledCloseButtonWrapper>
           ) : null}
+          <StyledCheckSolutionContainer>{isvalid}</StyledCheckSolutionContainer>
+          {this.state.startGame ? (
+            <ControlPanel
+              resetGame={() => {
+                this.resetGame();
+              }}
+              showSolution={() => {
+                this.showSolution();
+              }}
+              checkSolution={() => {
+                this.checkSolution(this.state.board, this.state.completedBoard);
+              }}
+              setNewNumber={() => {
+                this.setNewNumber(0);
+              }}
+              toggleSolution={this.state.solution}
+            />
+          ) : null}
+
           {this.state.startGame ? (
             <GameBoard
               gameMode={this.state.mode}
@@ -360,29 +391,6 @@ class Main extends Component {
               gameMode={this.state.mode}
             />
           )}
-          {/* 
-          <GameNumbers
-            possibleNumbers={this.state.possibleNumbers}
-            onClick={this.setNewNumber}
-          /> */}
-          {this.state.startGame ? (
-            <ControlPanel
-              resetGame={() => {
-                this.resetGame();
-              }}
-              showSolution={() => {
-                this.showSolution();
-              }}
-              checkSolution={() => {
-                this.checkSolution(this.state.board, this.state.completedBoard);
-              }}
-              setNewNumber={() => {
-                this.setNewNumber(0);
-              }}
-              // isSolutionValid={this.state.checkSolution}
-              toggleSolution={this.state.solution}
-            />
-          ) : null}
         </StyledMain>
       </StyledMainWrapper>
     );

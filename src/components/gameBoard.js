@@ -6,7 +6,12 @@ const Row = styled.div`
   display: flex;
   flex-direction: row;
 `;
-
+const StyledGameBoardWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`;
 const StyledGameBoard = styled.div`
   display: flex;
   align-items: center;
@@ -145,10 +150,12 @@ const GameBoard = ({
   ));
 
   return (
-    <StyledGameBoard>
-      <div>{gameboard}</div>
+    <StyledGameBoardWrapper>
+      <StyledGameBoard>
+        <div>{gameboard}</div>
+      </StyledGameBoard>
       <GameNumbers possibleNumbers={possibleNumbers} onClick={setNewNumber} />
-    </StyledGameBoard>
+    </StyledGameBoardWrapper>
   );
 };
 

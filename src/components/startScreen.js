@@ -6,7 +6,6 @@ const StyledNewgameScreen = styled.div`
   flex-direction: column;
   align-items: center;
   position: relative;
-  /* justify-content: center; */
   background: #f5f5f2;
   border: solid 1px #d3d8db;
   border-radius: 5px;
@@ -95,12 +94,6 @@ const StyledNewgameScreen = styled.div`
   @media (max-width: 630px) {
     min-width: 450px;
     min-height: 600px;
-    /* h1 {
-      margin: 80px 0 0 0;
-    }
-    h3 {
-      margin: 30px 0 0 0;
-    } */
     section {
       top: 310px;
       left: 125px;
@@ -140,7 +133,6 @@ const StartScreen = ({
               value={difficulty}
               onChange={difficultyHandler}
             >
-              {/* <option value="-">-</option> */}
               <option value="30">Easy</option>
               <option value="40">Normal</option>
               <option value="50">Hard</option>

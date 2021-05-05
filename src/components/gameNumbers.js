@@ -26,10 +26,7 @@ const StyledCell = styled.div`
 `;
 
 const StyledGameNumbers = styled.div`
-  position: absolute;
-  bottom: 70px;
-  /* left: 0; */
-  /* margin: 10px 0 0 0; */
+  margin-top: 10px;
   display: flex;
   flex-direction: row;
   @media (max-width: 860px) {

@@ -11,11 +11,23 @@ const StyledMain = styled.div`
   z-index: 4;
   position: relative;
   width: 800px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 0 100px;
+  @media (max-width: 860px) {
+    max-width: 600px;
+    height: 100%;
+    padding: 0;
+  }
+  @media (max-width: 630px) {
+    max-width: 100%;
+    width: auto;
+    height: 100%;
+    padding: 0;
+  }
 `;
 const StyledMainWrapper = styled.div`
   z-index: 1;
@@ -29,13 +41,22 @@ const StyledMainWrapper = styled.div`
 
 const StyledCloseButtonWrapper = styled.div`
   position: absolute;
-  top: 20px;
+  z-index: 10;
+  top: 180px;
   right: 25px;
+  @media (max-width: 860px) {
+    right: 15px;
+    top: 60px;
+  }
+  @media (max-width: 630px) {
+    top: 30px;
+    padding: 0;
+  }
 `;
 
 class Main extends Component {
   state = {
-    mode: 0,
+    mode: 9,
     possibleNumbers: [],
     board: [],
     completedBoard: [],
@@ -183,16 +204,22 @@ class Main extends Component {
   // SHOW SOLUTION
 
   checkSolution = (gameBoard, solution) => {
+    const timeOut = () => {
+      setTimeout(() => {
+        this.setState(() => ({ checkSolution: null }));
+      }, 3000);
+    };
     for (let r = 0; r < this.state.mode; r++) {
       for (let c = 0; c < this.state.mode; c++) {
         if (gameBoard[r][c] !== solution[r][c]) {
           this.setState(() => ({ checkSolution: false }));
-          return console.log("Incorrect");
+          timeOut();
+          return;
         }
       }
     }
     this.setState(() => ({ checkSolution: true }));
-    return console.log("Correct");
+    timeOut();
   };
 
   showSolution = () => {
@@ -221,14 +248,14 @@ class Main extends Component {
 
   endGame = () => {
     this.setState(() => ({
-      mode: 0,
+      mode: 9,
       possibleNumbers: [],
       board: [],
       completedBoard: [],
       lockedCells: [],
       startGame: false,
       solution: false,
-      checkSolution: false,
+      checkSolution: null,
       selected: false,
       selectedIndex: [],
       difficulty: 36,
@@ -239,25 +266,14 @@ class Main extends Component {
     const board = this.state.solution
       ? this.state.completedBoard
       : this.state.board;
-    let notificationMessage = (
-      <div>
-        <p>
-          {this.state.checkSolution === true
-            ? "RIGHT"
-            : !this.state.checkSolution === false
-            ? "WRONG"
-            : null}
-        </p>
-      </div>
-    );
+
     return (
       <StyledMainWrapper onClick={(e) => this.deselect(e)}>
         <StyledMain onClick={(e) => e.stopPropagation()}>
-          {notificationMessage}
           {this.state.startGame ? (
             <StyledCloseButtonWrapper>
               <Button
-                name={<i class="fas fa-times"></i>}
+                name={<i className="fas fa-times"></i>}
                 onClick={() => {
                   this.endGame();
                 }}
@@ -306,6 +322,8 @@ class Main extends Component {
               setNewNumber={() => {
                 this.setNewNumber(0);
               }}
+              isSolutionValid={this.state.checkSolution}
+              toggleSolution={this.state.solution}
             />
           ) : null}
         </StyledMain>

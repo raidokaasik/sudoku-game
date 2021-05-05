@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const StyledButton = styled.button`
   outline: none;
-  background: #fff;
+  background: ${(props) => (props.selected ? "#d7eef7" : " #fff;")};
   border: solid 1px #d3d8db;
   cursor: pointer;
   padding: 7px 15px;
@@ -14,10 +14,19 @@ const StyledButton = styled.button`
     border: solid 1px #bbc1c4;
     background: #d7eef7;
   }
+  @media (max-width: 630px) {
+    font-size: 1.2rem;
+    font-weight: 300;
+    padding: 12px 22px;
+  }
 `;
 
-const Button = ({ onClick, name }) => {
-  return <StyledButton onClick={onClick}>{name}</StyledButton>;
+const Button = ({ onClick, name, selected }) => {
+  return (
+    <StyledButton selected={selected} onClick={onClick}>
+      {name}
+    </StyledButton>
+  );
 };
 
 export default Button;

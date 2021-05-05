@@ -92,6 +92,24 @@ const StyledNewgameScreen = styled.div`
       color: #576063;
     }
   }
+  @media (max-width: 630px) {
+    min-width: 450px;
+    min-height: 600px;
+    h1 {
+      margin: 80px 0 0 0;
+    }
+    h3 {
+      margin: 30px 0 0 0;
+    }
+    section {
+      top: 230px;
+      left: 125px;
+    }
+    div {
+      left: 93px;
+      top: 280px;
+    }
+  }
 `;
 
 const StartScreen = ({
@@ -109,9 +127,8 @@ const StartScreen = ({
         <section>
           <label name="mode">Type</label>
           <select name="mode" id="mode" value={gameMode} onChange={modeHandler}>
-            <option value="-">-</option>
-            <option value="4">4x4</option>
             <option value="9">9x9</option>
+            <option value="4">4x4</option>
           </select>
         </section>
         {gameMode === 9 ? (

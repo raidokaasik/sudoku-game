@@ -13,9 +13,17 @@ const StyledGameBoard = styled.div`
   flex-direction: column;
   background: #f5f5f2;
   border: solid 1px #d3d8db;
-  min-height: 600px;
-  min-width: 600px;
+  height: 600px;
+  width: 600px;
   border-radius: 5px;
+
+  @media (max-width: 630px) {
+    min-width: 450px;
+    min-height: 450px;
+    width: auto;
+    height: auto;
+    padding: 10px;
+  }
 `;
 
 const StyledCell = styled.div`
@@ -92,6 +100,10 @@ const StyledCell = styled.div`
     props.locked ? "#fff" : props.active ? "#d7eef7" : "#fff"};
   &:hover {
     background: ${(props) => (props.locked ? "#fff" : "#d7eef7")};
+  }
+  @media (max-width: 630px) {
+    min-width: 50px;
+    min-height: 50px;
   }
 `;
 

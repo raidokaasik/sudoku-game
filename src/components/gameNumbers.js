@@ -12,22 +12,32 @@ const StyledCell = styled.div`
   padding: 5px;
   font-weight: 600;
   font-size: 1.4rem;
-  min-width: 60px;
-  min-height: 60px;
+  width: 60px;
+  height: 60px;
   color: #576063;
   background: #fff;
   &:hover {
     background: #d7eef7;
   }
+  @media (max-width: 630px) {
+    width: 50px;
+    height: 50px;
+  }
 `;
 
 const StyledGameNumbers = styled.div`
   position: absolute;
-  top: 630px;
+  bottom: 70px;
   /* left: 0; */
   /* margin: 10px 0 0 0; */
   display: flex;
   flex-direction: row;
+  @media (max-width: 860px) {
+  }
+  @media (max-width: 630px) {
+    bottom: 150px;
+    padding: 0;
+  }
 `;
 
 const GameNumbers = ({ possibleNumbers, onClick }) => {

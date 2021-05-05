@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import GameNumbers from "./gameNumbers";
 
 const Row = styled.div`
   display: flex;
@@ -107,7 +108,15 @@ const StyledCell = styled.div`
   }
 `;
 
-const GameBoard = ({ board, lockedCell, selectedIndex, onClick, gameMode }) => {
+const GameBoard = ({
+  board,
+  lockedCell,
+  selectedIndex,
+  onClick,
+  gameMode,
+  setNewNumber,
+  possibleNumbers,
+}) => {
   const gameboard = board.map((item, rowIndex) => (
     <Row key={rowIndex}>
       {item.map((cell, colIndex) => (
@@ -138,6 +147,7 @@ const GameBoard = ({ board, lockedCell, selectedIndex, onClick, gameMode }) => {
   return (
     <StyledGameBoard>
       <div>{gameboard}</div>
+      <GameNumbers possibleNumbers={possibleNumbers} onClick={setNewNumber} />
     </StyledGameBoard>
   );
 };

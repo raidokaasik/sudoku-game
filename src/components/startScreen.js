@@ -95,19 +95,19 @@ const StyledNewgameScreen = styled.div`
   @media (max-width: 630px) {
     min-width: 450px;
     min-height: 600px;
-    h1 {
+    /* h1 {
       margin: 80px 0 0 0;
     }
     h3 {
       margin: 30px 0 0 0;
-    }
+    } */
     section {
-      top: 230px;
+      top: 310px;
       left: 125px;
     }
     div {
       left: 93px;
-      top: 280px;
+      top: 360px;
     }
   }
 `;
@@ -141,9 +141,9 @@ const StartScreen = ({
               onChange={difficultyHandler}
             >
               {/* <option value="-">-</option> */}
-              <option value="36">Easy</option>
-              <option value="54">Normal</option>
-              <option value="64">Hard</option>
+              <option value="30">Easy</option>
+              <option value="40">Normal</option>
+              <option value="50">Hard</option>
             </select>
           </div>
         ) : null}

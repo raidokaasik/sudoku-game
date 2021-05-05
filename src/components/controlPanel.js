@@ -87,9 +87,6 @@ const ControlPanel = ({
       />
       <Button name={"Check"} onClick={checkSolution} />
       <Button name={"Erase"} onClick={setNewNumber} />
-      <StyledCheckSolutionContainer isValid={isSolutionValid}>
-        {isvalid}
-      </StyledCheckSolutionContainer>
     </StyledWrapper>
   );
 };

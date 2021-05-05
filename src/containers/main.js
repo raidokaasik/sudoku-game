@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { solution } from "../utils/solver";
 import GameBoard from "../components/gameBoard";
-import GameNumbers from "../components/gameNumbers";
 import ControlPanel from "../components/controlPanel";
 import StartScreen from "../components/startScreen";
 import Button from "../components/button";
@@ -30,6 +29,7 @@ const StyledMain = styled.div`
   }
 `;
 const StyledMainWrapper = styled.div`
+  position: relative;
   z-index: 1;
   width: 100%;
   height: 100vh;
@@ -37,6 +37,42 @@ const StyledMainWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+`;
+
+const StyledCheckSolutionContainer = styled.div`
+  position: absolute;
+  top: 380px;
+  right: 5px;
+  margin: 10px 0 0 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  flex-direction: column;
+  color: ${(props) => (props.isValid ? "limegreen" : "tomato")};
+  i {
+    font-size: 1.5rem;
+  }
+  p {
+    font-size: 1.2rem;
+  }
+  @media (max-width: 860px) {
+    width: 100%;
+    gap: 15px;
+    flex-direction: row;
+    top: 100px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media (max-width: 630px) {
+    width: 100%;
+    gap: 15px;
+    flex-direction: column;
+    top: 30px;
+    align-items: center;
+    justify-content: center;
+  }
 `;
 
 const StyledCloseButtonWrapper = styled.div`
@@ -66,7 +102,7 @@ class Main extends Component {
     checkSolution: null,
     selected: false,
     selectedIndex: [],
-    difficulty: 36,
+    difficulty: 30,
   };
 
   // START AND RESET GAME
@@ -258,11 +294,29 @@ class Main extends Component {
       checkSolution: null,
       selected: false,
       selectedIndex: [],
-      difficulty: 36,
+      difficulty: 30,
     }));
   };
 
   render() {
+    const correct = (
+      <>
+        <i className="fas fa-check"></i>
+        <p>Correct</p>
+      </>
+    );
+    const inCorrect = (
+      <>
+        <i className="fas fa-times"></i>
+        <p>Incorrect</p>
+      </>
+    );
+    const isvalid =
+      this.state.checkSolution === true
+        ? correct
+        : this.state.checkSolution === false
+        ? inCorrect
+        : null;
     const board = this.state.solution
       ? this.state.completedBoard
       : this.state.board;
@@ -270,6 +324,7 @@ class Main extends Component {
     return (
       <StyledMainWrapper onClick={(e) => this.deselect(e)}>
         <StyledMain onClick={(e) => e.stopPropagation()}>
+          <StyledCheckSolutionContainer>{isvalid}</StyledCheckSolutionContainer>
           {this.state.startGame ? (
             <StyledCloseButtonWrapper>
               <Button
@@ -287,6 +342,8 @@ class Main extends Component {
               lockedCell={this.state.lockedCells}
               selectedIndex={this.state.selectedIndex}
               onClick={this.getIndex}
+              setNewNumber={this.setNewNumber}
+              possibleNumbers={this.state.possibleNumbers}
             />
           ) : (
             <StartScreen
@@ -303,11 +360,11 @@ class Main extends Component {
               gameMode={this.state.mode}
             />
           )}
-
+          {/* 
           <GameNumbers
             possibleNumbers={this.state.possibleNumbers}
             onClick={this.setNewNumber}
-          />
+          /> */}
           {this.state.startGame ? (
             <ControlPanel
               resetGame={() => {
@@ -322,7 +379,7 @@ class Main extends Component {
               setNewNumber={() => {
                 this.setNewNumber(0);
               }}
-              isSolutionValid={this.state.checkSolution}
+              // isSolutionValid={this.state.checkSolution}
               toggleSolution={this.state.solution}
             />
           ) : null}

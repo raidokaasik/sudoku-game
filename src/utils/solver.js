@@ -1,5 +1,3 @@
-// import { isCellValid } from "./validate";
-
 const checkRows = (grid, row, value) => {
   if (grid[row].indexOf(value) === -1) {
     return true;
@@ -26,20 +24,6 @@ const check9x9Box = (grid, row, col, value) => {
     }
   }
   return true;
-  // console.log(fromRow);
-  // console.log(fromCol);
-  // console.log("To: " + (fromRow + 3));
-  // console.log("To: " + (fromCol + 3));
-  // const fromRow = Math.floor(row / 3) * 2;
-  // const fromCol = Math.floor(col / 3) * 2;
-  // for (let r = fromRow; r <= fromRow + 1; r++) {
-  //   for (let c = fromCol; c <= fromCol + 1; c++) {
-  //     if (grid[r][c] === value) {
-  //       return false;
-  //     }
-  //   }
-  // }
-  // return true;
 };
 
 const check4x4Box = (grid, row, col, value) => {

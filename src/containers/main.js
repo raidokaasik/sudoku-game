@@ -347,7 +347,9 @@ class Main extends Component {
               />
             </StyledCloseButtonWrapper>
           ) : null}
-          <StyledCheckSolutionContainer>{isvalid}</StyledCheckSolutionContainer>
+          <StyledCheckSolutionContainer isValid={this.state.checkSolution}>
+            {isvalid}
+          </StyledCheckSolutionContainer>
           {this.state.startGame ? (
             <ControlPanel
               resetGame={() => {

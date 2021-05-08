@@ -19,9 +19,14 @@ const StyledCell = styled.div`
   &:hover {
     background: #d7eef7;
   }
+  @media (max-width: 860px) {
+    font-size: ${(props) => (props.mode === 4 ? "2.2rem" : "1.4rem")};
+    width: ${(props) => (props.mode === 9 ? "60px" : "100px")};
+    height: ${(props) => (props.mode === 9 ? "60px" : "100px")};
+  }
   @media (max-width: 630px) {
-    width: 50px;
-    height: 50px;
+    width: ${(props) => (props.mode === 9 ? "50px" : "80px")};
+    height: ${(props) => (props.mode === 9 ? "50px" : "80px")};
   }
 `;
 
@@ -37,9 +42,10 @@ const StyledGameNumbers = styled.div`
   }
 `;
 
-const GameNumbers = ({ possibleNumbers, onClick }) => {
+const GameNumbers = ({ possibleNumbers, onClick, gameMode }) => {
   const gameNumbers = possibleNumbers.map((item, index) => (
     <StyledCell
+      mode={gameMode}
       onClick={() => {
         onClick(item);
       }}

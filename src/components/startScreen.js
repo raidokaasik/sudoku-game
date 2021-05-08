@@ -9,9 +9,12 @@ const StyledNewgameScreen = styled.div`
   background: #f5f5f2;
   border: solid 1px #d3d8db;
   border-radius: 5px;
-  min-height: 600px;
-  min-width: 600px;
+  height: 600px;
+  width: 600px;
   form {
+    width: 250px;
+    height: 100%;
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -44,7 +47,7 @@ const StyledNewgameScreen = styled.div`
   }
   input {
     position: absolute;
-    top: 430px;
+    top: 120px;
     cursor: pointer;
     outline: none;
     background: #fff;
@@ -68,8 +71,9 @@ const StyledNewgameScreen = styled.div`
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    top: 310px;
-    left: 200px;
+    top: 20px;
+    right: 70px;
+
     label {
       font-weight: 400;
       font-size: 1rem;
@@ -83,8 +87,10 @@ const StyledNewgameScreen = styled.div`
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    top: 360px;
-    left: 168px;
+    top: 71px;
+    right: 70px;
+    /* top: 360px;
+    left: 168px; */
     label {
       font-weight: 400;
       font-size: 1rem;
@@ -92,16 +98,20 @@ const StyledNewgameScreen = styled.div`
     }
   }
   @media (max-width: 630px) {
-    min-width: 450px;
-    min-height: 600px;
-    section {
-      top: 310px;
-      left: 125px;
+    min-width: 320px;
+    width: 90%;
+    height: 600px;
+
+    /* section {
+      width: 250px;
+      margin-bottom: 10px;
+      top: 0;
+      left: 0;
     }
     div {
-      left: 93px;
-      top: 360px;
-    }
+      top: 0;
+      left: 0;
+    } */
   }
 `;
 

@@ -14,6 +14,13 @@ const StyledButton = styled.button`
     border: solid 1px #bbc1c4;
     background: #d7eef7;
   }
+
+  @media (max-width: 860px) {
+    font-size: 1.2rem;
+    font-weight: 300;
+    padding: 12px 22px;
+  }
+
   @media (max-width: 630px) {
     font-size: 1.2rem;
     font-weight: 300;

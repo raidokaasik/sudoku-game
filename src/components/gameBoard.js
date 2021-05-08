@@ -24,11 +24,12 @@ const StyledGameBoard = styled.div`
   border-radius: 5px;
 
   @media (max-width: 630px) {
-    min-width: 450px;
-    min-height: 450px;
+    min-width: 320px;
+    min-height: 320px;
     width: auto;
     height: auto;
-    padding: 10px;
+
+    padding: ${(props) => (props.mode === 4 ? "60px" : "20px")};
   }
 `;
 
@@ -107,9 +108,15 @@ const StyledCell = styled.div`
   &:hover {
     background: ${(props) => (props.locked ? "#fff" : "#d7eef7")};
   }
+
+  @media (max-width: 860px) {
+    font-size: ${(props) => (props.mode === 4 ? "2.2rem" : "1.4rem")};
+    min-width: ${(props) => (props.mode === 9 ? "60px" : "100px")};
+    min-height: ${(props) => (props.mode === 9 ? "60px" : "100px")};
+  }
   @media (max-width: 630px) {
-    min-width: 50px;
-    min-height: 50px;
+    min-width: ${(props) => (props.mode === 9 ? "50px" : "80px")};
+    min-height: ${(props) => (props.mode === 9 ? "50px" : "80px")};
   }
 `;
 
@@ -151,10 +158,14 @@ const GameBoard = ({
 
   return (
     <StyledGameBoardWrapper>
-      <StyledGameBoard>
+      <StyledGameBoard mode={gameMode}>
         <div>{gameboard}</div>
       </StyledGameBoard>
-      <GameNumbers possibleNumbers={possibleNumbers} onClick={setNewNumber} />
+      <GameNumbers
+        gameMode={gameMode}
+        possibleNumbers={possibleNumbers}
+        onClick={setNewNumber}
+      />
     </StyledGameBoardWrapper>
   );
 };

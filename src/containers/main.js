@@ -17,15 +17,14 @@ const StyledMain = styled.div`
   align-items: center;
   padding: 0 100px;
   @media (max-width: 860px) {
-    max-width: 600px;
+    width: 600px;
     height: 100%;
-    padding: 0;
+    padding: 0 30px;
   }
   @media (max-width: 630px) {
-    max-width: 100%;
-    width: auto;
+    width: 100%;
     height: 100%;
-    padding: 0;
+    padding: 0 0;
   }
 `;
 const StyledMainWrapper = styled.div`
@@ -61,11 +60,17 @@ const StyledCheckSolutionContainer = styled.div`
     position: relative;
     top: 0;
     width: 100%;
-    height: 50px;
+    height: 70px;
     gap: 15px;
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    i {
+      font-size: 2rem;
+    }
+    p {
+      font-size: 1.8rem;
+    }
   }
 
   @media (max-width: 630px) {
@@ -94,7 +99,7 @@ const StyledCloseButtonWrapper = styled.div`
     top: 0;
   }
   @media (max-width: 630px) {
-    padding: 0;
+    padding-right: 30px;
   }
 `;
 

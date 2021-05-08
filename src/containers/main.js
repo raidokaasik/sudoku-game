@@ -60,7 +60,7 @@ const StyledCheckSolutionContainer = styled.div`
     position: relative;
     top: 0;
     width: 100%;
-    height: 70px;
+    height: 100px;
     gap: 15px;
     flex-direction: row;
     align-items: center;

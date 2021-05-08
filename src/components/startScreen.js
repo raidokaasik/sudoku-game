@@ -89,8 +89,6 @@ const StyledNewgameScreen = styled.div`
     align-items: center;
     top: 71px;
     right: 70px;
-    /* top: 360px;
-    left: 168px; */
     label {
       font-weight: 400;
       font-size: 1rem;
@@ -101,17 +99,6 @@ const StyledNewgameScreen = styled.div`
     min-width: 320px;
     width: 90%;
     height: 600px;
-
-    /* section {
-      width: 250px;
-      margin-bottom: 10px;
-      top: 0;
-      left: 0;
-    }
-    div {
-      top: 0;
-      left: 0;
-    } */
   }
 `;
 

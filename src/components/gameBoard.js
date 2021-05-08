@@ -19,8 +19,8 @@ const StyledGameBoard = styled.div`
   flex-direction: column;
   background: #f5f5f2;
   border: solid 1px #d3d8db;
-  height: 600px;
-  width: 600px;
+  height: ${(props) => (props.mode === 4 ? "500px" : "600px")};
+  width: ${(props) => (props.mode === 4 ? "500px" : "600px")};
   border-radius: 5px;
 
   @media (max-width: 630px) {

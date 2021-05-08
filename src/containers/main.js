@@ -31,7 +31,6 @@ const StyledMainWrapper = styled.div`
   position: relative;
   z-index: 1;
   width: 100%;
-
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -129,8 +128,7 @@ class Main extends Component {
         possibleNumbers: this.createButtons(),
         completedBoard: board,
       }));
-      const numbersToRemove =
-        this.state.mode === 4 ? 11 : this.state.difficulty;
+      const numbersToRemove = this.state.mode === 4 ? 5 : this.state.difficulty;
       await this.removeCells(this.state.mode, numbersToRemove);
     } else {
       console.log("Mode must be selected");
@@ -188,13 +186,37 @@ class Main extends Component {
   removeCells = async (gameMode, numbersToRemove) => {
     let nums = numbersToRemove;
     let newArray = this.deepCopy(this.state.completedBoard);
+
+    const checker = (gameboard, solution) => {
+      for (let r = 0; r < this.state.mode; r++) {
+        for (let c = 0; c < this.state.mode; c++) {
+          if (gameboard[r][c] !== solution[r][c]) {
+            return false;
+          }
+        }
+      }
+      return true;
+    };
+
     const helper = (nums) => {
+      const randomRow2 = Math.floor(Math.random() * gameMode);
+      const randomCol2 = Math.floor(Math.random() * gameMode);
       const randomRow = Math.floor(Math.random() * gameMode);
       const randomCol = Math.floor(Math.random() * gameMode);
       if (nums === 0) return;
-      if (newArray[randomRow][randomCol] !== 0) {
-        newArray[randomRow][randomCol] = 0;
-        nums--;
+      if (randomCol !== randomCol2 || randomRow !== randomRow2) {
+        if (
+          newArray[randomRow][randomCol] !== 0 &&
+          newArray[randomRow2][randomCol2] !== 0
+        ) {
+          newArray[randomRow][randomCol] = 0;
+          newArray[randomRow2][randomCol2] = 0;
+          console.log(newArray);
+
+          nums--;
+        }
+      } else {
+        helper(nums);
       }
       helper(nums);
     };

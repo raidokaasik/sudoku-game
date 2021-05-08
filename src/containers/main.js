@@ -5,6 +5,7 @@ import GameBoard from "../components/gameBoard";
 import ControlPanel from "../components/controlPanel";
 import StartScreen from "../components/startScreen";
 import Button from "../components/button";
+import { deepCopy } from "../utils/deepCopy";
 
 const StyledMain = styled.div`
   z-index: 4;
@@ -128,7 +129,7 @@ class Main extends Component {
         possibleNumbers: this.createButtons(),
         completedBoard: board,
       }));
-      const numbersToRemove = this.state.mode === 4 ? 5 : this.state.difficulty;
+      const numbersToRemove = this.state.mode === 4 ? 4 : this.state.difficulty;
       await this.removeCells(this.state.mode, numbersToRemove);
     } else {
       console.log("Mode must be selected");
@@ -175,17 +176,17 @@ class Main extends Component {
 
   // REMOVE NR OF CELLS
   // Util to create a deep copy of 2D array
-  deepCopy = (array) => {
-    let copy = [];
-    for (let i = 0; i < array.length; i++) {
-      copy[i] = array[i].slice();
-    }
-    return copy;
-  };
+  // deepCopy = (array) => {
+  //   let copy = [];
+  //   for (let i = 0; i < array.length; i++) {
+  //     copy[i] = array[i].slice();
+  //   }
+  //   return copy;
+  // };
   // remove cells
   removeCells = async (gameMode, numbersToRemove) => {
     let nums = numbersToRemove;
-    let newArray = this.deepCopy(this.state.completedBoard);
+    let newArray = deepCopy(this.state.completedBoard);
 
     const checker = (gameboard, solution) => {
       for (let r = 0; r < this.state.mode; r++) {
@@ -211,14 +212,19 @@ class Main extends Component {
         ) {
           newArray[randomRow][randomCol] = 0;
           newArray[randomRow2][randomCol2] = 0;
+          // console.log(solution(newArray, this.state.mode));
+          let copiedArray = deepCopy(newArray);
+          console.log(solution(copiedArray, this.state.mode));
           console.log(newArray);
 
           nums--;
         }
-      } else {
-        helper(nums);
+
+        // let copiedArray = this.deepCopy(newArray);
+        // solution(copiedArray, this.state.mode);
       }
       helper(nums);
+      // helper(nums);
     };
     helper(nums);
     this.lockedCellGroup(newArray);
@@ -296,7 +302,7 @@ class Main extends Component {
   setNewNumber = (value) => {
     const index = this.state.selectedIndex;
     if (index.length !== 0) {
-      let copiedBoard = this.deepCopy(this.state.board);
+      let copiedBoard = deepCopy(this.state.board);
       copiedBoard[index[0]][index[1]] = value;
       this.setState({ board: copiedBoard });
     }

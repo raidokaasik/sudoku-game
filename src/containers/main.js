@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import styled from "styled-components";
-import {solution, reversedSolution, randomSolution} from "../utils/solver";
+import {solution, reversedSolution} from "../utils/solver";
 import GameBoard from "../components/gameBoard";
 import ControlPanel from "../components/controlPanel";
 import StartScreen from "../components/startScreen";

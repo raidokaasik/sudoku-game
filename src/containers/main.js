@@ -1,11 +1,11 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import styled from "styled-components";
-import { solution } from "../utils/solver";
+import {solution, reversedSolution, randomSolution} from "../utils/solver";
 import GameBoard from "../components/gameBoard";
 import ControlPanel from "../components/controlPanel";
 import StartScreen from "../components/startScreen";
 import Button from "../components/button";
-import { deepCopy } from "../utils/deepCopy";
+import {deepCopy} from "../utils/deepCopy";
 
 const StyledMain = styled.div`
   z-index: 4;
@@ -49,7 +49,7 @@ const StyledCheckSolutionContainer = styled.div`
   align-items: center;
   gap: 5px;
   flex-direction: column;
-  color: ${(props) => (props.isValid ? "limegreen" : "tomato")};
+  color: ${props => (props.isValid ? "limegreen" : "tomato")};
   i {
     font-size: 1.5rem;
   }
@@ -115,21 +115,21 @@ class Main extends Component {
     checkSolution: null,
     selected: false,
     selectedIndex: [],
-    difficulty: 30,
+    difficulty: 15,
   };
 
   // START AND RESET GAME
   // start
-  startNewGame = async (e) => {
+  startNewGame = async e => {
     e.preventDefault();
     if (this.state.mode !== 0) {
       const board = await this.createRandomBoard();
-      this.setState((prev) => ({
+      this.setState(prev => ({
         startGame: !prev.startGame,
         possibleNumbers: this.createButtons(),
         completedBoard: board,
       }));
-      const numbersToRemove = this.state.mode === 4 ? 4 : this.state.difficulty;
+      const numbersToRemove = this.state.mode === 4 ? 5 : this.state.difficulty;
       await this.removeCells(this.state.mode, numbersToRemove);
     } else {
       console.log("Mode must be selected");
@@ -139,16 +139,16 @@ class Main extends Component {
   // reset
   resetGame = async () => {
     const board = await this.createRandomBoard();
-    this.setState((prev) => ({
+    this.setState(prev => ({
       completedBoard: board,
     }));
-    const numbersToRemove = this.state.mode === 4 ? 11 : this.state.difficulty;
+    const numbersToRemove = this.state.mode === 4 ? 5 : this.state.difficulty;
     await this.removeCells(this.state.mode, numbersToRemove);
   };
 
   // HANDLE GAME MODE AND DIFFICULTY
   // game mode
-  modeHandler = (e) => {
+  modeHandler = e => {
     e.preventDefault();
     const selectValue = document.getElementById("mode");
     this.setState(() => ({
@@ -157,7 +157,7 @@ class Main extends Component {
   };
 
   // difficulty
-  difficultyHandler = (e) => {
+  difficultyHandler = e => {
     e.preventDefault();
     const selectValue = document.getElementById("difficulty");
     this.setState(() => ({
@@ -175,19 +175,10 @@ class Main extends Component {
   };
 
   // REMOVE NR OF CELLS
-  // Util to create a deep copy of 2D array
-  // deepCopy = (array) => {
-  //   let copy = [];
-  //   for (let i = 0; i < array.length; i++) {
-  //     copy[i] = array[i].slice();
-  //   }
-  //   return copy;
-  // };
   // remove cells
   removeCells = async (gameMode, numbersToRemove) => {
     let nums = numbersToRemove;
     let newArray = deepCopy(this.state.completedBoard);
-
     const checker = (gameboard, solution) => {
       for (let r = 0; r < this.state.mode; r++) {
         for (let c = 0; c < this.state.mode; c++) {
@@ -199,7 +190,7 @@ class Main extends Component {
       return true;
     };
 
-    const helper = (nums) => {
+    const helper = nums => {
       const randomRow2 = Math.floor(Math.random() * gameMode);
       const randomCol2 = Math.floor(Math.random() * gameMode);
       const randomRow = Math.floor(Math.random() * gameMode);
@@ -210,30 +201,38 @@ class Main extends Component {
           newArray[randomRow][randomCol] !== 0 &&
           newArray[randomRow2][randomCol2] !== 0
         ) {
-          newArray[randomRow][randomCol] = 0;
-          newArray[randomRow2][randomCol2] = 0;
-          // console.log(solution(newArray, this.state.mode));
           let copiedArray = deepCopy(newArray);
-          console.log(solution(copiedArray, this.state.mode));
-          console.log(newArray);
-
-          nums--;
+          let reversedArray = deepCopy(newArray);
+          copiedArray[randomRow][randomCol] = 0;
+          copiedArray[randomRow2][randomCol2] = 0;
+          reversedArray[randomRow][randomCol] = 0;
+          reversedArray[randomRow2][randomCol2] = 0;
+          if (
+            checker(
+              solution(copiedArray, this.state.mode),
+              this.state.completedBoard
+            ) &&
+            checker(
+              reversedSolution(reversedArray, this.state.mode),
+              this.state.completedBoard
+            )
+          ) {
+            newArray[randomRow][randomCol] = 0;
+            newArray[randomRow2][randomCol2] = 0;
+            nums--;
+          }
         }
-
-        // let copiedArray = this.deepCopy(newArray);
-        // solution(copiedArray, this.state.mode);
       }
       helper(nums);
-      // helper(nums);
     };
     helper(nums);
     this.lockedCellGroup(newArray);
-    this.setState({ board: newArray });
+    this.setState({board: newArray});
   };
 
   // CREATE RANDOM BOARD & SOLVE IT
   // first row of random INTs
-  createFirstRow = (num) => {
+  createFirstRow = num => {
     let firstRow = [];
     const helper = () => {
       const random = Math.floor(Math.random() * num) + 1;
@@ -265,24 +264,24 @@ class Main extends Component {
   checkSolution = (gameBoard, solution) => {
     const timeOut = () => {
       setTimeout(() => {
-        this.setState(() => ({ checkSolution: null }));
+        this.setState(() => ({checkSolution: null}));
       }, 3000);
     };
     for (let r = 0; r < this.state.mode; r++) {
       for (let c = 0; c < this.state.mode; c++) {
         if (gameBoard[r][c] !== solution[r][c]) {
-          this.setState(() => ({ checkSolution: false }));
+          this.setState(() => ({checkSolution: false}));
           timeOut();
           return;
         }
       }
     }
-    this.setState(() => ({ checkSolution: true }));
+    this.setState(() => ({checkSolution: true}));
     timeOut();
   };
 
   showSolution = () => {
-    this.setState((prev) => ({ solution: !prev.solution }));
+    this.setState(prev => ({solution: !prev.solution}));
   };
 
   // UTILS
@@ -290,7 +289,7 @@ class Main extends Component {
   // Get index of the cell to be modified
 
   getIndex = (row, col) => {
-    this.setState(() => ({ selected: true }));
+    this.setState(() => ({selected: true}));
     const selection = [row, col];
     this.setState(() => ({
       selectedIndex: selection,
@@ -299,18 +298,18 @@ class Main extends Component {
 
   // Set a new value to the selected Cell
 
-  setNewNumber = (value) => {
+  setNewNumber = value => {
     const index = this.state.selectedIndex;
     if (index.length !== 0) {
       let copiedBoard = deepCopy(this.state.board);
       copiedBoard[index[0]][index[1]] = value;
-      this.setState({ board: copiedBoard });
+      this.setState({board: copiedBoard});
     }
   };
 
   // Creates an array of cells that were originally generated and cannot be modified.
 
-  lockedCellGroup = (board) => {
+  lockedCellGroup = board => {
     const lockedCells = [];
     for (let r = 0; r < this.state.mode; r++) {
       for (let c = 0; c < this.state.mode; c++) {
@@ -319,11 +318,11 @@ class Main extends Component {
         }
       }
     }
-    this.setState({ lockedCells: lockedCells });
+    this.setState({lockedCells: lockedCells});
   };
 
   deselect = () => {
-    this.setState({ selectedIndex: [] });
+    this.setState({selectedIndex: []});
   };
 
   // END GAME
@@ -340,7 +339,7 @@ class Main extends Component {
       checkSolution: null,
       selected: false,
       selectedIndex: [],
-      difficulty: 30,
+      difficulty: 15,
     }));
   };
 
@@ -368,8 +367,8 @@ class Main extends Component {
       : this.state.board;
 
     return (
-      <StyledMainWrapper onClick={(e) => this.deselect(e)}>
-        <StyledMain onClick={(e) => e.stopPropagation()}>
+      <StyledMainWrapper onClick={e => this.deselect(e)}>
+        <StyledMain onClick={e => e.stopPropagation()}>
           {this.state.startGame ? (
             <StyledCloseButtonWrapper>
               <Button
@@ -413,13 +412,13 @@ class Main extends Component {
             />
           ) : (
             <StartScreen
-              startNewGame={(e) => {
+              startNewGame={e => {
                 this.startNewGame(e);
               }}
-              modeHandler={(e) => {
+              modeHandler={e => {
                 this.modeHandler(e);
               }}
-              difficultyHandler={(e) => {
+              difficultyHandler={e => {
                 this.difficultyHandler(e);
               }}
               difficulty={this.state.difficulty}

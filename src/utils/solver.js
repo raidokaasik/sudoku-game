@@ -80,4 +80,33 @@ const solution = (grid, mode) => {
   return grid;
 };
 
-export { solution };
+const reversedSolution = (grid, mode) => {
+  let empty = nextCell(grid, mode);
+  const row = empty[0];
+  const col = empty[1];
+  if (row === "done") return;
+  for (let i = mode; i >= 1; i--) {
+    if (isCellValid(grid, row, col, i, mode)) {
+      grid[row][col] = i;
+      reversedSolution(grid, mode);
+    }
+  }
+  if (nextCell(grid, mode)[0] !== "done") grid[row][col] = 0;
+  return grid;
+};
+
+const randomSolution = (grid, mode) => {
+  let empty = nextCell(grid, mode);
+  const row = empty[0];
+  const col = empty[1];
+  if (row === "done") return;
+  const random = Math.floor(Math.random() * mode) + 1;
+  if (isCellValid(grid, row, col, random, mode)) {
+    grid[row][col] = random;
+    randomSolution(grid, mode);
+  }
+  if (nextCell(grid, mode)[0] !== "done") grid[row][col] = 0;
+  return grid;
+};
+
+export {solution, reversedSolution, randomSolution};

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import { device } from "../theme/devices";
 import { solution, reversedSolution } from "../utils/solver";
 import GameBoard from "../components/gameBoard";
 import ControlPanel from "../components/controlPanel";
@@ -17,15 +18,20 @@ const StyledMain = styled.div`
   justify-content: center;
   align-items: center;
   padding: 0 100px;
-  @media (max-width: 860px) {
+  @media ${device.laptopL} {
+    height: 95%;
+  }
+  @media ${device.tablet} {
     width: 600px;
     height: 100%;
     padding: 0 30px;
   }
-  @media (max-width: 630px) {
-    width: 100%;
-    height: 100%;
+  @media ${device.mobileL} {
+    width: 380px;
     padding: 0 0;
+  }
+  @media ${device.mobileM} {
+    width: 350px;
   }
 `;
 const StyledMainWrapper = styled.div`
@@ -56,30 +62,24 @@ const StyledCheckSolutionContainer = styled.div`
   p {
     font-size: 1.2rem;
   }
-  @media (max-width: 860px) {
-    position: relative;
+  @media ${device.laptopL} {
+    right: 65px;
+  }
+  @media ${device.tablet} {
+    right: 0;
     top: 0;
+    position: relative;
     width: 100%;
-    height: 100px;
-    gap: 15px;
+    min-height: 30px;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     i {
-      font-size: 2rem;
+      font-size: 1.7rem;
     }
     p {
-      font-size: 1.8rem;
+      font-size: 1.4rem;
     }
-  }
-
-  @media (max-width: 630px) {
-    margin-bottom: 30px;
-    width: 100%;
-    gap: 15px;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
   }
 `;
 
@@ -88,18 +88,25 @@ const StyledCloseButtonWrapper = styled.div`
   z-index: 10;
   top: 180px;
   right: 25px;
-  @media (max-width: 860px) {
-    padding: 10px 0;
-    width: 100%;
+
+  @media ${device.laptopL} {
+    top: 180px;
+    right: 85px;
+  }
+  @media ${device.tablet} {
     display: flex;
     flex-direction: row;
+    width: 100%;
+    padding: ${(props) => (props.mode === 9 ? "0 45px 0 0" : "0 65px 0 0")};
     justify-content: flex-end;
     position: relative;
     right: 0;
     top: 0;
   }
-  @media (max-width: 630px) {
-    padding-right: 30px;
+  @media ${device.mobileL} {
+    padding: ${(props) => (props.mode === 9 ? "0 15px 0 0" : "0 15px 0 0")};
+  }
+  @media ${device.mobileM} {
   }
 `;
 
@@ -368,7 +375,7 @@ class Main extends Component {
       <StyledMainWrapper onClick={(e) => this.deselect(e)}>
         <StyledMain onClick={(e) => e.stopPropagation()}>
           {this.state.startGame ? (
-            <StyledCloseButtonWrapper>
+            <StyledCloseButtonWrapper mode={this.state.mode}>
               <Button
                 name={<i className="fas fa-times"></i>}
                 onClick={() => {

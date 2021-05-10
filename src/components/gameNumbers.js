@@ -1,4 +1,5 @@
 import React from "react";
+import { device } from "../theme/devices";
 import styled from "styled-components";
 
 const StyledCell = styled.div`
@@ -11,22 +12,34 @@ const StyledCell = styled.div`
   justify-content: center;
   padding: 5px;
   font-weight: 600;
-  font-size: 1.4rem;
-  width: 60px;
-  height: 60px;
+  font-size: ${(props) => (props.mode === 4 ? "1.6rem" : "1.4rem")};
+  width: ${(props) => (props.mode === 9 ? "60px" : "70px")};
+  height: ${(props) => (props.mode === 9 ? "60px" : "70px")};
   color: #576063;
   background: #fff;
   &:hover {
     background: #d7eef7;
   }
-  @media (max-width: 860px) {
-    font-size: ${(props) => (props.mode === 4 ? "2.2rem" : "1.4rem")};
-    width: ${(props) => (props.mode === 9 ? "60px" : "100px")};
-    height: ${(props) => (props.mode === 9 ? "60px" : "100px")};
+  @media ${device.laptopL} {
+    font-size: ${(props) => (props.mode === 4 ? "2rem" : "1.4rem")};
+    width: ${(props) => (props.mode === 9 ? "45px" : "70px")};
+    height: ${(props) => (props.mode === 9 ? "45px" : "70px")};
   }
-  @media (max-width: 630px) {
-    width: ${(props) => (props.mode === 9 ? "50px" : "80px")};
-    height: ${(props) => (props.mode === 9 ? "50px" : "80px")};
+  @media ${device.tablet} {
+    font-size: ${(props) => (props.mode === 4 ? "2rem" : "1.4rem")};
+    width: ${(props) => (props.mode === 9 ? "45px" : "80px")};
+    height: ${(props) => (props.mode === 9 ? "45px" : "80px")};
+  }
+  @media ${device.mobileL} {
+    font-size: ${(props) => (props.mode === 4 ? "1.8rem" : "1.2rem")};
+    width: ${(props) => (props.mode === 9 ? "40px" : "75px")};
+    height: ${(props) => (props.mode === 9 ? "40px" : "75px")};
+  }
+
+  @media ${device.mobileM} {
+    font-size: ${(props) => (props.mode === 4 ? "1.8rem" : "1.1rem")};
+    width: ${(props) => (props.mode === 9 ? "35px" : "65px")};
+    height: ${(props) => (props.mode === 9 ? "35px" : "65px")};
   }
 `;
 
@@ -34,11 +47,9 @@ const StyledGameNumbers = styled.div`
   margin-top: 10px;
   display: flex;
   flex-direction: row;
-  @media (max-width: 860px) {
-  }
-  @media (max-width: 630px) {
-    bottom: 150px;
-    padding: 0;
+
+  @media ${device.laptopL} {
+    margin-top: 3px;
   }
 `;
 

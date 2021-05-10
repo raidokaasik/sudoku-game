@@ -1,4 +1,5 @@
 import React from "react";
+import { device } from "../theme/devices";
 import styled from "styled-components";
 
 const StyledButton = styled.button`
@@ -15,16 +16,21 @@ const StyledButton = styled.button`
     background: #d7eef7;
   }
 
-  @media (max-width: 860px) {
-    font-size: 1.2rem;
+  @media ${device.tablet} {
+    font-size: 1.1rem;
     font-weight: 300;
-    padding: 12px 22px;
+    padding: 11px 23px;
   }
 
-  @media (max-width: 630px) {
-    font-size: 1.2rem;
+  @media ${device.mobileL} {
+    font-size: 1.1rem;
     font-weight: 300;
-    padding: 12px 22px;
+    padding: 8px 16px;
+  }
+  @media ${device.mobileM} {
+    font-size: 1rem;
+    font-weight: 300;
+    padding: 6px 14px;
   }
 `;
 

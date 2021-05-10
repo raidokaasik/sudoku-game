@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "./button";
+import { device } from "../theme/devices";
 import styled from "styled-components";
 
 const StyledWrapper = styled.div`
@@ -9,22 +10,19 @@ const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
-  @media (max-width: 860px) {
+  @media ${device.laptopL} {
+    top: 220px;
+    right: 60px;
+  }
+  @media ${device.tablet} {
     position: relative;
     width: 100%;
     flex-direction: row;
-    top: 0;
-    margin-bottom: 30px;
-    padding-left: 15px;
-  }
-  @media (max-width: 630px) {
-    padding: 0;
-    width: 100%;
-    gap: 15px;
-    flex-direction: row;
-    top: 0;
     align-items: center;
     justify-content: center;
+    margin-bottom: 10px;
+    top: 0;
+    right: 0;
   }
 `;
 

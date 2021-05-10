@@ -95,18 +95,4 @@ const reversedSolution = (grid, mode) => {
   return grid;
 };
 
-const randomSolution = (grid, mode) => {
-  let empty = nextCell(grid, mode);
-  const row = empty[0];
-  const col = empty[1];
-  if (row === "done") return;
-  const random = Math.floor(Math.random() * mode) + 1;
-  if (isCellValid(grid, row, col, random, mode)) {
-    grid[row][col] = random;
-    randomSolution(grid, mode);
-  }
-  if (nextCell(grid, mode)[0] !== "done") grid[row][col] = 0;
-  return grid;
-};
-
-export {solution, reversedSolution, randomSolution};
+export { solution, reversedSolution };

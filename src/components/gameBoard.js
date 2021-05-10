@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { device } from "../theme/devices";
 import GameNumbers from "./gameNumbers";
 
 const Row = styled.div`
@@ -23,13 +24,23 @@ const StyledGameBoard = styled.div`
   width: ${(props) => (props.mode === 4 ? "500px" : "600px")};
   border-radius: 5px;
 
-  @media (max-width: 630px) {
+  @media ${device.laptopL} {
+    padding: ${(props) => (props.mode === 4 ? "40px" : "20px")};
     min-width: 320px;
     min-height: 320px;
     width: auto;
     height: auto;
+  }
 
-    padding: ${(props) => (props.mode === 4 ? "60px" : "20px")};
+  @media ${device.tablet} {
+    padding: ${(props) => (props.mode === 4 ? "45px" : "20px")};
+  }
+
+  @media ${device.mobileL} {
+    padding: ${(props) => (props.mode === 4 ? "25px" : "10px")};
+  }
+  @media ${device.mobileM} {
+    padding: ${(props) => (props.mode === 4 ? "15px" : "5px")};
   }
 `;
 
@@ -99,9 +110,9 @@ const StyledCell = styled.div`
   justify-content: center;
   padding: 5px;
   font-weight: 600;
-  font-size: 1.4rem;
-  min-width: ${(props) => (props.mode === 9 ? "60px" : "60px")};
-  min-height: ${(props) => (props.mode === 9 ? "60px" : "60px")};
+  font-size: ${(props) => (props.mode === 4 ? "2rem" : "1.4rem")};
+  min-width: ${(props) => (props.mode === 9 ? "60px" : "70px")};
+  min-height: ${(props) => (props.mode === 9 ? "60px" : "70px")};
   color: #576063;
   background: ${(props) =>
     props.locked ? "#fff" : props.active ? "#d7eef7" : "#fff"};
@@ -109,14 +120,28 @@ const StyledCell = styled.div`
     background: ${(props) => (props.locked ? "#fff" : "#d7eef7")};
   }
 
-  @media (max-width: 860px) {
-    font-size: ${(props) => (props.mode === 4 ? "2.2rem" : "1.4rem")};
-    min-width: ${(props) => (props.mode === 9 ? "60px" : "100px")};
-    min-height: ${(props) => (props.mode === 9 ? "60px" : "100px")};
+  @media ${device.laptopL} {
+    font-size: ${(props) => (props.mode === 4 ? "2rem" : "1.4rem")};
+    min-width: ${(props) => (props.mode === 9 ? "45px" : "70px")};
+    min-height: ${(props) => (props.mode === 9 ? "45px" : "70px")};
   }
-  @media (max-width: 630px) {
-    min-width: ${(props) => (props.mode === 9 ? "50px" : "80px")};
-    min-height: ${(props) => (props.mode === 9 ? "50px" : "80px")};
+
+  @media ${device.tablet} {
+    font-size: ${(props) => (props.mode === 4 ? "2rem" : "1.4rem")};
+    min-width: ${(props) => (props.mode === 9 ? "45px" : "80px")};
+    min-height: ${(props) => (props.mode === 9 ? "45px" : "80px")};
+  }
+
+  @media ${device.mobileL} {
+    font-size: ${(props) => (props.mode === 4 ? "1.8rem" : "1.2rem")};
+    min-width: ${(props) => (props.mode === 9 ? "40px" : "75px")};
+    min-height: ${(props) => (props.mode === 9 ? "40px" : "75px")};
+  }
+
+  @media ${device.mobileM} {
+    font-size: ${(props) => (props.mode === 4 ? "1.8rem" : "1.1rem")};
+    min-width: ${(props) => (props.mode === 9 ? "35px" : "65px")};
+    min-height: ${(props) => (props.mode === 9 ? "35px" : "65px")};
   }
 `;
 

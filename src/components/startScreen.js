@@ -1,4 +1,5 @@
 import React from "react";
+import { device } from "../theme/devices";
 import styled from "styled-components";
 
 const StyledNewgameScreen = styled.div`
@@ -95,10 +96,19 @@ const StyledNewgameScreen = styled.div`
       color: #576063;
     }
   }
-  @media (max-width: 630px) {
+  @media ${device.laptopL} {
     min-width: 320px;
     width: 90%;
-    height: 600px;
+    h1 {
+      margin: 70px 0 0 0;
+    }
+  }
+  @media ${device.mobileL} {
+    h1 {
+      font-weight: 800;
+      font-size: 3.5rem;
+      margin: 70px 0 0 0;
+    }
   }
 `;
 

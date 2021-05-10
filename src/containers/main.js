@@ -64,7 +64,7 @@ const StyledCheckSolutionContainer = styled.div`
     font-size: 1.2rem;
   }
   @media ${device.laptopL} {
-    right: 65px;
+    top: 440px;
   }
   @media ${device.tablet} {
     right: 0;
@@ -91,7 +91,7 @@ const StyledCloseButtonWrapper = styled.div`
   right: 25px;
 
   @media ${device.laptopL} {
-    top: 180px;
+    top: 220px;
   }
   @media ${device.tablet} {
     display: flex;

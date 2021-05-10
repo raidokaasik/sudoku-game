@@ -11,7 +11,7 @@ const StyledWrapper = styled.div`
   flex-direction: column;
   gap: 5px;
   @media ${device.laptopL} {
-    top: 220px;
+    top: 280px;
   }
   @media ${device.tablet} {
     position: relative;

@@ -131,7 +131,7 @@ const StartScreen = ({
               onChange={difficultyHandler}
             >
               <option value="15">Easy</option>
-              <option value="25">Normal</option>
+              <option value="20">Normal</option>
               <option value="25">Hard</option>
             </select>
           </div>

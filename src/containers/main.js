@@ -1,11 +1,11 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import styled from "styled-components";
-import {solution, reversedSolution} from "../utils/solver";
+import { solution, reversedSolution } from "../utils/solver";
 import GameBoard from "../components/gameBoard";
 import ControlPanel from "../components/controlPanel";
 import StartScreen from "../components/startScreen";
 import Button from "../components/button";
-import {deepCopy} from "../utils/deepCopy";
+import { deepCopy } from "../utils/deepCopy";
 
 const StyledMain = styled.div`
   z-index: 4;
@@ -49,7 +49,7 @@ const StyledCheckSolutionContainer = styled.div`
   align-items: center;
   gap: 5px;
   flex-direction: column;
-  color: ${props => (props.isValid ? "limegreen" : "tomato")};
+  color: ${(props) => (props.isValid ? "limegreen" : "tomato")};
   i {
     font-size: 1.5rem;
   }
@@ -120,11 +120,11 @@ class Main extends Component {
 
   // START AND RESET GAME
   // start
-  startNewGame = async e => {
+  startNewGame = async (e) => {
     e.preventDefault();
     if (this.state.mode !== 0) {
       const board = await this.createRandomBoard();
-      this.setState(prev => ({
+      this.setState((prev) => ({
         startGame: !prev.startGame,
         possibleNumbers: this.createButtons(),
         completedBoard: board,
@@ -139,7 +139,7 @@ class Main extends Component {
   // reset
   resetGame = async () => {
     const board = await this.createRandomBoard();
-    this.setState(prev => ({
+    this.setState((prev) => ({
       completedBoard: board,
     }));
     const numbersToRemove = this.state.mode === 4 ? 5 : this.state.difficulty;
@@ -148,7 +148,7 @@ class Main extends Component {
 
   // HANDLE GAME MODE AND DIFFICULTY
   // game mode
-  modeHandler = e => {
+  modeHandler = (e) => {
     e.preventDefault();
     const selectValue = document.getElementById("mode");
     this.setState(() => ({
@@ -157,7 +157,7 @@ class Main extends Component {
   };
 
   // difficulty
-  difficultyHandler = e => {
+  difficultyHandler = (e) => {
     e.preventDefault();
     const selectValue = document.getElementById("difficulty");
     this.setState(() => ({
@@ -190,7 +190,7 @@ class Main extends Component {
       return true;
     };
 
-    const helper = nums => {
+    const helper = (nums) => {
       const randomRow2 = Math.floor(Math.random() * gameMode);
       const randomCol2 = Math.floor(Math.random() * gameMode);
       const randomRow = Math.floor(Math.random() * gameMode);
@@ -227,12 +227,12 @@ class Main extends Component {
     };
     helper(nums);
     this.lockedCellGroup(newArray);
-    this.setState({board: newArray});
+    this.setState({ board: newArray });
   };
 
   // CREATE RANDOM BOARD & SOLVE IT
   // first row of random INTs
-  createFirstRow = num => {
+  createFirstRow = (num) => {
     let firstRow = [];
     const helper = () => {
       const random = Math.floor(Math.random() * num) + 1;
@@ -264,24 +264,23 @@ class Main extends Component {
   checkSolution = (gameBoard, solution) => {
     const timeOut = () => {
       setTimeout(() => {
-        this.setState(() => ({checkSolution: null}));
+        this.setState(() => ({ checkSolution: null }));
       }, 3000);
     };
     for (let r = 0; r < this.state.mode; r++) {
       for (let c = 0; c < this.state.mode; c++) {
         if (gameBoard[r][c] !== solution[r][c]) {
-          this.setState(() => ({checkSolution: false}));
+          this.setState(() => ({ checkSolution: false }));
           timeOut();
           return;
         }
       }
     }
-    this.setState(() => ({checkSolution: true}));
+    this.setState(() => ({ checkSolution: true }));
     timeOut();
   };
-
   showSolution = () => {
-    this.setState(prev => ({solution: !prev.solution}));
+    this.setState((prev) => ({ solution: !prev.solution }));
   };
 
   // UTILS
@@ -289,7 +288,7 @@ class Main extends Component {
   // Get index of the cell to be modified
 
   getIndex = (row, col) => {
-    this.setState(() => ({selected: true}));
+    this.setState(() => ({ selected: true }));
     const selection = [row, col];
     this.setState(() => ({
       selectedIndex: selection,
@@ -298,18 +297,18 @@ class Main extends Component {
 
   // Set a new value to the selected Cell
 
-  setNewNumber = value => {
+  setNewNumber = (value) => {
     const index = this.state.selectedIndex;
     if (index.length !== 0) {
       let copiedBoard = deepCopy(this.state.board);
       copiedBoard[index[0]][index[1]] = value;
-      this.setState({board: copiedBoard});
+      this.setState({ board: copiedBoard });
     }
   };
 
   // Creates an array of cells that were originally generated and cannot be modified.
 
-  lockedCellGroup = board => {
+  lockedCellGroup = (board) => {
     const lockedCells = [];
     for (let r = 0; r < this.state.mode; r++) {
       for (let c = 0; c < this.state.mode; c++) {
@@ -318,11 +317,10 @@ class Main extends Component {
         }
       }
     }
-    this.setState({lockedCells: lockedCells});
+    this.setState({ lockedCells: lockedCells });
   };
-
   deselect = () => {
-    this.setState({selectedIndex: []});
+    this.setState({ selectedIndex: [] });
   };
 
   // END GAME
@@ -367,8 +365,8 @@ class Main extends Component {
       : this.state.board;
 
     return (
-      <StyledMainWrapper onClick={e => this.deselect(e)}>
-        <StyledMain onClick={e => e.stopPropagation()}>
+      <StyledMainWrapper onClick={(e) => this.deselect(e)}>
+        <StyledMain onClick={(e) => e.stopPropagation()}>
           {this.state.startGame ? (
             <StyledCloseButtonWrapper>
               <Button
@@ -412,13 +410,13 @@ class Main extends Component {
             />
           ) : (
             <StartScreen
-              startNewGame={e => {
+              startNewGame={(e) => {
                 this.startNewGame(e);
               }}
-              modeHandler={e => {
+              modeHandler={(e) => {
                 this.modeHandler(e);
               }}
-              difficultyHandler={e => {
+              difficultyHandler={(e) => {
                 this.difficultyHandler(e);
               }}
               difficulty={this.state.difficulty}

@@ -12,12 +12,12 @@ const StyledMain = styled.div`
   z-index: 4;
   position: relative;
   width: 800px;
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 0 100px;
+
   @media ${device.laptopL} {
     padding: 0 30px;
     height: 95%;

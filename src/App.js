@@ -8,6 +8,7 @@ const StyledApp = styled.div`
   width: 100%;
   height: 100vh;
   background: #e4eced;
+  overflow: auto;
 `;
 
 function App() {

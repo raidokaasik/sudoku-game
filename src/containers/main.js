@@ -19,16 +19,17 @@ const StyledMain = styled.div`
   align-items: center;
   padding: 0 100px;
   @media ${device.laptopL} {
+    padding: 0 30px;
     height: 95%;
+    width: 700px;
   }
   @media ${device.tablet} {
-    width: 600px;
+    width: auto;
+    padding: 0 0;
     height: 100%;
-    padding: 0 30px;
   }
   @media ${device.mobileL} {
     width: 380px;
-    padding: 0 0;
   }
   @media ${device.mobileM} {
     width: 350px;
@@ -91,7 +92,6 @@ const StyledCloseButtonWrapper = styled.div`
 
   @media ${device.laptopL} {
     top: 180px;
-    right: 85px;
   }
   @media ${device.tablet} {
     display: flex;

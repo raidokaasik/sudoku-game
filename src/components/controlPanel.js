@@ -12,7 +12,6 @@ const StyledWrapper = styled.div`
   gap: 5px;
   @media ${device.laptopL} {
     top: 220px;
-    right: 60px;
   }
   @media ${device.tablet} {
     position: relative;
@@ -22,7 +21,6 @@ const StyledWrapper = styled.div`
     justify-content: center;
     margin-bottom: 10px;
     top: 0;
-    right: 0;
   }
 `;
 

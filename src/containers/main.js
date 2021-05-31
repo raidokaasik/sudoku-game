@@ -136,7 +136,13 @@ class Main extends Component {
         possibleNumbers: this.createButtons(),
         completedBoard: board,
       }));
-      const numbersToRemove = this.state.mode === 4 ? 5 : this.state.difficulty;
+      // const numbersToRemove = this.state.mode === 4 ? 5 : this.state.difficulty;
+      const numbersToRemove =
+        this.state.mode === 4
+          ? 5
+          : this.state.mode === 9
+          ? this.state.difficulty
+          : 100;
       await this.removeCells(this.state.mode, numbersToRemove);
     } else {
       console.log("Mode must be selected");
@@ -263,6 +269,7 @@ class Main extends Component {
     };
     helper();
     solution(newBoard, this.state.mode);
+    console.log(newBoard);
     return newBoard;
   };
 
@@ -324,6 +331,7 @@ class Main extends Component {
         }
       }
     }
+    console.log(lockedCells);
     this.setState({ lockedCells: lockedCells });
   };
   deselect = () => {

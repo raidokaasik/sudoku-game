@@ -115,9 +115,9 @@ const StyledCell = styled.div`
   min-height: ${(props) => (props.mode === 9 ? "60px" : "70px")};
   color: #576063;
   background: ${(props) =>
-    props.locked ? "#fff" : props.active ? "#d7eef7" : "#fff"};
+    props.locked ? "#f2f2f0" : props.active ? "#d1e5f0" : "#fff"};
   &:hover {
-    background: ${(props) => (props.locked ? "#fff" : "#d7eef7")};
+    background: ${(props) => (props.locked ? "#f2f2f0" : "#ebf3f5")};
   }
 
   @media ${device.laptopL} {

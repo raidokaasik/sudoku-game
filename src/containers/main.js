@@ -8,12 +8,28 @@ import StartScreen from "../components/startScreen";
 import Button from "../components/button";
 import { deepCopy } from "../utils/deepCopy";
 
+const StyledSidePanel = styled.div`
+  display: flex;
+  flex-flow: column;
+  height: 300px;
+  gap: 10px;
+  align-items: center;
+  @media ${device.tablet} {
+    max-height: 160px;
+  }
+  @media ${device.mobileM} {
+    max-height: 120px;
+    gap: 4px;
+  }
+`;
+
 const StyledMain = styled.div`
   z-index: 4;
   position: relative;
   width: 800px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  gap: 10px;
   justify-content: center;
   align-items: center;
   padding: 0 100px;
@@ -24,6 +40,8 @@ const StyledMain = styled.div`
     width: 700px;
   }
   @media ${device.tablet} {
+    gap: 0;
+    flex-direction: column-reverse;
     width: auto;
     padding: 0 0;
     height: 100%;
@@ -47,10 +65,10 @@ const StyledMainWrapper = styled.div`
 `;
 
 const StyledCheckSolutionContainer = styled.div`
-  position: absolute;
-  top: 380px;
-  right: 5px;
-  margin: 10px 0 0 0;
+  /* position: absolute;
+  top: 380px; */
+
+  /* margin: 10px 0 0 0; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -67,11 +85,9 @@ const StyledCheckSolutionContainer = styled.div`
     top: 440px;
   }
   @media ${device.tablet} {
-    right: 0;
-    top: 0;
-    position: relative;
+    /* position: relative; */
     width: 100%;
-    min-height: 30px;
+    min-height: 20px;
     flex-direction: row;
     align-items: center;
     justify-content: center;
@@ -85,10 +101,10 @@ const StyledCheckSolutionContainer = styled.div`
 `;
 
 const StyledCloseButtonWrapper = styled.div`
-  position: absolute;
-  z-index: 10;
+  /* position: absolute;
   top: 180px;
-  right: 25px;
+  right: 25px; */
+  z-index: 10;
 
   @media ${device.laptopL} {
     top: 220px;
@@ -97,14 +113,16 @@ const StyledCloseButtonWrapper = styled.div`
     display: flex;
     flex-direction: row;
     width: 100%;
-    padding: ${(props) => (props.mode === 9 ? "0 45px 0 0" : "0 65px 0 0")};
+    /* padding: ${(props) =>
+      props.mode === 9 ? "0 45px 0 0" : "0 65px 0 0"}; */
     justify-content: flex-end;
     position: relative;
     right: 0;
     top: 0;
   }
   @media ${device.mobileL} {
-    padding: ${(props) => (props.mode === 9 ? "0 15px 0 0" : "0 15px 0 0")};
+    /* padding: ${(props) =>
+      props.mode === 9 ? "0 15px 0 0" : "0 15px 0 0"}; */
   }
   @media ${device.mobileM} {
   }
@@ -269,7 +287,7 @@ class Main extends Component {
     };
     helper();
     solution(newBoard, this.state.mode);
-    console.log(newBoard);
+
     return newBoard;
   };
 
@@ -331,7 +349,7 @@ class Main extends Component {
         }
       }
     }
-    console.log(lockedCells);
+
     this.setState({ lockedCells: lockedCells });
   };
   deselect = () => {
@@ -383,37 +401,6 @@ class Main extends Component {
       <StyledMainWrapper onClick={(e) => this.deselect(e)}>
         <StyledMain onClick={(e) => e.stopPropagation()}>
           {this.state.startGame ? (
-            <StyledCloseButtonWrapper mode={this.state.mode}>
-              <Button
-                name={<i className="fas fa-times"></i>}
-                onClick={() => {
-                  this.endGame();
-                }}
-              />
-            </StyledCloseButtonWrapper>
-          ) : null}
-          <StyledCheckSolutionContainer isValid={this.state.checkSolution}>
-            {isvalid}
-          </StyledCheckSolutionContainer>
-          {this.state.startGame ? (
-            <ControlPanel
-              resetGame={() => {
-                this.resetGame();
-              }}
-              showSolution={() => {
-                this.showSolution();
-              }}
-              checkSolution={() => {
-                this.checkSolution(this.state.board, this.state.completedBoard);
-              }}
-              setNewNumber={() => {
-                this.setNewNumber(0);
-              }}
-              toggleSolution={this.state.solution}
-            />
-          ) : null}
-
-          {this.state.startGame ? (
             <GameBoard
               gameMode={this.state.mode}
               board={board}
@@ -438,6 +425,44 @@ class Main extends Component {
               gameMode={this.state.mode}
             />
           )}
+          <StyledSidePanel>
+            {this.state.startGame ? (
+              <StyledCloseButtonWrapper mode={this.state.mode}>
+                <Button
+                  type="regular"
+                  closedButton
+                  name={<i className="fas fa-times"></i>}
+                  onClick={() => {
+                    this.endGame();
+                  }}
+                />
+              </StyledCloseButtonWrapper>
+            ) : null}
+
+            {this.state.startGame ? (
+              <ControlPanel
+                resetGame={() => {
+                  this.resetGame();
+                }}
+                showSolution={() => {
+                  this.showSolution();
+                }}
+                checkSolution={() => {
+                  this.checkSolution(
+                    this.state.board,
+                    this.state.completedBoard
+                  );
+                }}
+                setNewNumber={() => {
+                  this.setNewNumber(0);
+                }}
+                toggleSolution={this.state.solution}
+              />
+            ) : null}
+            <StyledCheckSolutionContainer isValid={this.state.checkSolution}>
+              {isvalid}
+            </StyledCheckSolutionContainer>
+          </StyledSidePanel>
         </StyledMain>
       </StyledMainWrapper>
     );

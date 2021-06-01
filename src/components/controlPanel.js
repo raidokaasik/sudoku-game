@@ -4,9 +4,9 @@ import { device } from "../theme/devices";
 import styled from "styled-components";
 
 const StyledWrapper = styled.div`
-  position: absolute;
+  /* position: absolute;
   top: 230px;
-  right: 0;
+  right: 0; */
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -33,14 +33,15 @@ const ControlPanel = ({
 }) => {
   return (
     <StyledWrapper>
-      <Button name={"Reset"} onClick={resetGame} />
+      <Button type="regular" name={"Reset"} onClick={resetGame} />
+      <Button type="regular" name={"Check"} onClick={checkSolution} />
+      <Button type="regular" name={"Erase"} onClick={setNewNumber} />
       <Button
+        type="toggle"
         selected={toggleSolution}
         name={"Solution"}
         onClick={showSolution}
       />
-      <Button name={"Check"} onClick={checkSolution} />
-      <Button name={"Erase"} onClick={setNewNumber} />
     </StyledWrapper>
   );
 };

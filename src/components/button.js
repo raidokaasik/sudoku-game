@@ -1,5 +1,5 @@
 import React from "react";
-import { device } from "../theme/devices";
+// import { device } from "../theme/devices";
 
 import { Button } from "@material-ui/core";
 import { styled } from "@material-ui/styles";

@@ -1,71 +1,64 @@
 import React from "react";
-import { device } from "../theme/devices";
-import styled from "styled-components";
+import { Box, Button, makeStyles } from "@material-ui/core";
 
-const StyledCell = styled.div`
-  cursor: pointer;
-  border-radius: 3px;
-  border: solid 1px #d3d8db;
-  margin: 1px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 5px;
-  font-weight: 600;
-  font-size: ${(props) => (props.mode === 4 ? "1.6rem" : "1.4rem")};
-  width: ${(props) => (props.mode === 9 ? "60px" : "70px")};
-  height: ${(props) => (props.mode === 9 ? "60px" : "70px")};
-  color: #576063;
-  background: #fff;
-  &:hover {
-    background: #d7eef7;
-  }
-  @media ${device.laptopL} {
-    font-size: ${(props) => (props.mode === 4 ? "2rem" : "1.4rem")};
-    width: ${(props) => (props.mode === 9 ? "45px" : "70px")};
-    height: ${(props) => (props.mode === 9 ? "45px" : "70px")};
-  }
-  @media ${device.tablet} {
-    font-size: ${(props) => (props.mode === 4 ? "2rem" : "1.4rem")};
-    width: ${(props) => (props.mode === 9 ? "45px" : "80px")};
-    height: ${(props) => (props.mode === 9 ? "45px" : "80px")};
-  }
-  @media ${device.mobileL} {
-    font-size: ${(props) => (props.mode === 4 ? "1.8rem" : "1.2rem")};
-    width: ${(props) => (props.mode === 9 ? "40px" : "75px")};
-    height: ${(props) => (props.mode === 9 ? "40px" : "75px")};
-  }
-
-  @media ${device.mobileM} {
-    font-size: ${(props) => (props.mode === 4 ? "1.8rem" : "1.1rem")};
-    width: ${(props) => (props.mode === 9 ? "35px" : "65px")};
-    height: ${(props) => (props.mode === 9 ? "35px" : "65px")};
-  }
-`;
-
-const StyledGameNumbers = styled.div`
-  margin-top: 10px;
-  display: flex;
-  flex-direction: row;
-
-  @media ${device.laptopL} {
-    margin-top: 3px;
-  }
-`;
+const useStyles = makeStyles((theme) => ({
+  styledGameNumbers: {
+    marginTop: "10px",
+    display: "flex",
+    flexDirection: "row",
+    [theme.breakpoints.down(theme.breakpoints.values.laptopL)]: {
+      marginTop: "3px",
+    },
+  },
+  styledCell: {
+    minWidth: "0",
+    padding: "5px",
+    margin: "1px",
+    fontWeight: "600",
+    [theme.breakpoints.up(theme.breakpoints.values.laptopL)]: {
+      fontSize: (gameMode) => (gameMode === 4 ? "1.6rem" : "1.4rem"),
+      width: (gameMode) => (gameMode === 9 ? "60px" : "70px"),
+      height: (gameMode) => (gameMode === 9 ? "60px" : "70px"),
+    },
+    [theme.breakpoints.down(theme.breakpoints.values.laptopL)]: {
+      fontSize: (gameMode) => (gameMode === 4 ? "2rem" : "1.4rem"),
+      width: (gameMode) => (gameMode === 9 ? "45px" : "70px"),
+      height: (gameMode) => (gameMode === 9 ? "45px" : "70px"),
+    },
+    [theme.breakpoints.down(theme.breakpoints.values.tablet)]: {
+      fontSize: (gameMode) => (gameMode === 4 ? "2rem" : "1.4rem"),
+      width: (gameMode) => (gameMode === 9 ? "45px" : "80px"),
+      height: (gameMode) => (gameMode === 9 ? "45px" : "80px"),
+    },
+    [theme.breakpoints.down(theme.breakpoints.values.mobileL)]: {
+      fontSize: (gameMode) => (gameMode === 4 ? "1.8rem" : "1.2rem"),
+      width: (gameMode) => (gameMode === 9 ? "40px" : "75px"),
+      height: (gameMode) => (gameMode === 9 ? "40px" : "75px"),
+    },
+    [theme.breakpoints.down(theme.breakpoints.values.mobileM)]: {
+      fontSize: (gameMode) => (gameMode === 4 ? "1.8rem" : "1.1rem"),
+      width: (gameMode) => (gameMode === 9 ? "35px" : "65px"),
+      height: (gameMode) => (gameMode === 9 ? "35px" : "65px"),
+    },
+  },
+}));
 
 const GameNumbers = ({ possibleNumbers, onClick, gameMode }) => {
+  const classes = useStyles(gameMode);
   const gameNumbers = possibleNumbers.map((item, index) => (
-    <StyledCell
-      mode={gameMode}
+    <Button
+      className={classes.styledCell}
+      variant="contained"
+      color="primary"
       onClick={() => {
         onClick(item);
       }}
       key={index}
     >
       {item}
-    </StyledCell>
+    </Button>
   ));
-  return <StyledGameNumbers>{gameNumbers}</StyledGameNumbers>;
+  return <Box className={classes.styledGameNumbers}>{gameNumbers}</Box>;
 };
 
 export default GameNumbers;

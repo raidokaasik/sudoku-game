@@ -1,7 +1,39 @@
 import React from "react";
 import styled from "styled-components";
 import { device } from "../theme/devices";
+// import { Box, makeStyles } from "@material-ui/core";
 import GameNumbers from "./gameNumbers";
+
+// const useStyles = makeStyles((theme) => ({
+//   row: {
+//     display: "flex",
+//     flexDirection: "row",
+//   },
+//   styledGameBoardWrapper: {
+//     display: "flex",
+//     alignItems: "center",
+//     justifyContent: "center",
+//     flexDirection: "column",
+//   },
+//   styledGameBoard: {
+//     display: "flex",
+//     alignItems: "center",
+//     justifyContent: "center",
+//     flexDirection: "column",
+//     background: "#a1adc2",
+//     border: "solid 1px #d3d8db",
+//     height: (gameMode) => (gameMode === 4 ? "500px" : "600px"),
+//     width: (gameMode) => (gameMode === 4 ? "500px" : "600px"),
+//     borderRadius: "5px",
+//     [theme.breakpoints.down(theme.breakpoints.values.laptopL)]: {
+//       padding: (gameMode) => (gameMode === 4 ? "40px" : "20px"),
+//       minWidth: "320px",
+//       minHeight: "320px",
+//       width: "auto",
+//       height: "auto",
+//     },
+//   },
+// }));
 
 const Row = styled.div`
   display: flex;
@@ -18,7 +50,7 @@ const StyledGameBoard = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background: #f5f5f2;
+  background: #a1adc2;
   border: solid 1px #d3d8db;
   height: ${(props) => (props.mode === 4 ? "500px" : "600px")};
   width: ${(props) => (props.mode === 4 ? "500px" : "600px")};
@@ -154,6 +186,8 @@ const GameBoard = ({
   setNewNumber,
   possibleNumbers,
 }) => {
+  // const classes = useStyles(gameMode);
+
   const gameboard = board.map((item, rowIndex) => (
     <Row key={rowIndex}>
       {item.map((cell, colIndex) => (

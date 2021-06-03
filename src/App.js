@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import Main from "./containers/main";
+import theme from "./theme/theme";
+import { MuiThemeProvider } from "@material-ui/core/styles";
 
 const StyledApp = styled.div`
   display: flex;
@@ -13,9 +15,11 @@ const StyledApp = styled.div`
 
 function App() {
   return (
-    <StyledApp>
-      <Main />
-    </StyledApp>
+    <MuiThemeProvider theme={theme}>
+      <StyledApp>
+        <Main />
+      </StyledApp>
+    </MuiThemeProvider>
   );
 }
 

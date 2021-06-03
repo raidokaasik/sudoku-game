@@ -4,9 +4,6 @@ import { device } from "../theme/devices";
 import styled from "styled-components";
 
 const StyledWrapper = styled.div`
-  /* position: absolute;
-  top: 230px;
-  right: 0; */
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -39,7 +36,7 @@ const ControlPanel = ({
       <Button
         type="toggle"
         selected={toggleSolution}
-        name={"Solution"}
+        name={"Hint"}
         onClick={showSolution}
       />
     </StyledWrapper>

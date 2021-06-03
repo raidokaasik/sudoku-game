@@ -65,10 +65,6 @@ const StyledMainWrapper = styled.div`
 `;
 
 const StyledCheckSolutionContainer = styled.div`
-  /* position: absolute;
-  top: 380px; */
-
-  /* margin: 10px 0 0 0; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -85,7 +81,6 @@ const StyledCheckSolutionContainer = styled.div`
     top: 440px;
   }
   @media ${device.tablet} {
-    /* position: relative; */
     width: 100%;
     min-height: 20px;
     flex-direction: row;
@@ -101,9 +96,6 @@ const StyledCheckSolutionContainer = styled.div`
 `;
 
 const StyledCloseButtonWrapper = styled.div`
-  /* position: absolute;
-  top: 180px;
-  right: 25px; */
   z-index: 10;
 
   @media ${device.laptopL} {
@@ -113,16 +105,12 @@ const StyledCloseButtonWrapper = styled.div`
     display: flex;
     flex-direction: row;
     width: 100%;
-    /* padding: ${(props) =>
-      props.mode === 9 ? "0 45px 0 0" : "0 65px 0 0"}; */
     justify-content: flex-end;
     position: relative;
     right: 0;
     top: 0;
   }
   @media ${device.mobileL} {
-    /* padding: ${(props) =>
-      props.mode === 9 ? "0 15px 0 0" : "0 15px 0 0"}; */
   }
   @media ${device.mobileM} {
   }

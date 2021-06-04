@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
       color: "#333a3d",
     },
     "& h3": {
-      margin: "50px 0 20px 0",
+      margin: "20px 0 20px 0",
       fontWeight: "300",
       fontSize: "1.6rem",
       color: "#333a3d",
@@ -41,11 +41,12 @@ const useStyles = makeStyles((theme) => ({
       minWidth: "320px",
       width: "90%",
       "& h1": {
-        margin: "70px 0 0 0",
+        margin: "150px 0 0 0",
       },
     },
     [theme.breakpoints.down(theme.breakpoints.values.L)]: {
       "& h1": {
+        margin: "70px 0 0 0",
         fontWeight: "800",
         fontSize: "3.5rem",
       },

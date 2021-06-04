@@ -170,6 +170,7 @@ class Main extends Component {
   modeHandler = (e) => {
     e.preventDefault();
     const selectValue = document.getElementById("mode");
+    console.log(selectValue.value);
     this.setState(() => ({
       mode: parseInt(selectValue.value),
     }));
@@ -179,6 +180,7 @@ class Main extends Component {
   difficultyHandler = (e) => {
     e.preventDefault();
     const selectValue = document.getElementById("difficulty");
+    console.log(selectValue.value);
     this.setState(() => ({
       difficulty: parseInt(selectValue.value),
     }));

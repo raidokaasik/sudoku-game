@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { device } from "../theme/devices";
-// import { Box, makeStyles } from "@material-ui/core";
+
 import GameNumbers from "./gameNumbers";
 
 // const useStyles = makeStyles((theme) => ({

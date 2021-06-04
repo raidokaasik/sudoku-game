@@ -29,6 +29,21 @@ const ControlButton = ({ onClick, name, selected, closedButton, type }) => {
   let button = null;
 
   switch (type) {
+    case "submit":
+      button = (
+        <Button
+          className={classes.styledButton}
+          size="large"
+          fullWidth
+          type="submit"
+          variant="contained"
+          color="primary"
+          onClick={onClick}
+        >
+          {name}
+        </Button>
+      );
+      break;
     case "regular":
       button = (
         <Button

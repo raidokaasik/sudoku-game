@@ -10,11 +10,11 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   styledToggleButton: {
-    background: "#a1d132",
+    background: "#70a6d4",
     padding: "6px 16px",
     color: "#fff",
     "&:hover": {
-      background: "#88bf0a",
+      background: "#4783b5",
       color: "#fff",
     },
     [theme.breakpoints.down(theme.breakpoints.values.mobileM)]: {
